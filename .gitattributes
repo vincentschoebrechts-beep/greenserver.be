@@ -1,0 +1,4 @@
+docs/files/data/*.bin binary
+*.woff2 binary
+*.png binary
+*.zip binary

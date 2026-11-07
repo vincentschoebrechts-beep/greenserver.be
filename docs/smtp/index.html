@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMTP Tester: sender domain DNS and test commands</title>
+<meta name="description" content="Check a sender domain's SPF, DKIM, DMARC and MX records, and build the curl and OpenSSL commands to test SMTP sending.">
+<meta property="og:title" content="SMTP Tester: sender domain DNS and test commands">
+<meta property="og:description" content="Check a sender domain's SPF, DKIM, DMARC and MX records, and build the curl and OpenSSL commands to test SMTP sending.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://greenserver.be/smtp/">
+<link rel="canonical" href="https://greenserver.be/smtp/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../#tools">Tools</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <span class="state"><span class="led on" aria-hidden="true"></span>Runs in your browser</span>
+  <h1>SMTP Tester</h1>
+  <p class="lead">When a PLC, a camera or a printer can't send its email, two questions come up: is the sender domain set up correctly, and can the server be reached? This page helps you answer both.</p>
+</section>
+
+<section class="wrap">
+  <h2 id="dns">Check a sender domain</h2>
+  <div class="panel tool">
+    <form id="dns-form" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="dom">Sender domain or address</label>
+          <input id="dom" type="text" placeholder="greenserver.be" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="sel">DKIM selectors <span class="muted">(optional)</span></label>
+          <input id="sel" type="text" placeholder="s1, selector1" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <span class="hint">Separated by commas. You'll find them in the DKIM-Signature header of a sent message (s=…).</span>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" type="submit">Check domain</button>
+        <span id="dns-status" class="status-line" aria-live="polite"></span>
+      </div>
+    </form>
+    <ul id="dns-results" class="results"></ul>
+  </div>
+  <p class="small muted prose">Queries go straight from your browser to Cloudflare's public resolver (or Google's as a fallback), over DNS over HTTPS. Nothing goes through greenserver.be.</p>
+
+  <h2 id="commands">Prepare a sending test</h2>
+  <div class="panel tool">
+    <form id="cmd-form">
+      <div class="form-grid">
+        <fieldset>
+          <legend>Test PC system</legend>
+          <div class="seg">
+            <label><input type="radio" name="os" value="win" checked><span>Windows</span></label>
+            <label><input type="radio" name="os" value="unix"><span>Linux or macOS</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Encryption</legend>
+          <div class="seg">
+            <label><input type="radio" name="enc" value="starttls" checked><span>STARTTLS</span></label>
+            <label><input type="radio" name="enc" value="tls"><span>Direct TLS</span></label>
+            <label><input type="radio" name="enc" value="none"><span>None</span></label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="host">SMTP server</label>
+          <input id="host" type="text" placeholder="smtp.office365.com" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="port">Port</label>
+          <input id="port" type="number" min="1" max="65535" value="587" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="ip">Connect via IP <span class="muted">(optional)</span></label>
+          <input id="ip" type="text" placeholder="192.168.1.14" autocomplete="off" spellcheck="false">
+          <span class="hint">To go through a gateway or relay while still checking the certificate against the server's name.</span>
+        </div>
+        <div class="field">
+          <label for="from">Sender</label>
+          <input id="from" type="text" placeholder="plc@example.com" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="to">Recipient</label>
+          <input id="to" type="text" placeholder="you@example.com" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="user">Username</label>
+          <input id="user" type="text" placeholder="same as the sender" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+      </div>
+      <div class="checks" style="margin-top:1rem">
+        <label class="check"><input type="checkbox" id="auth" checked>With authentication</label>
+        <label class="check"><input type="checkbox" id="norevoke">Windows: skip the revocation check</label>
+        <label class="check"><input type="checkbox" id="insecure">Ignore the certificate (troubleshooting only)</label>
+      </div>
+    </form>
+    <div id="out" aria-live="polite"></div>
+  </div>
+  <p class="small muted prose">Nothing is sent: this page only builds the commands, which you run from a PC plugged in where the device is. Never type your password here.</p>
+
+  <h2>Reading the result</h2>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">You see</th><th scope="col">What it means</th></tr></thead>
+      <tbody>
+        <tr><td><code>curl: (7)</code> or <code>(28)</code></td><td>The port doesn't answer: a firewall, the wrong port, or port 25 blocked by the internet provider.</td></tr>
+        <tr><td><code>curl: (35)</code></td><td>The TLS handshake failed. On Windows, if the message mentions revocation, tick the matching option.</td></tr>
+        <tr><td><code>curl: (60)</code></td><td>The certificate doesn't match the requested name, typically when you target an IP address. Enter the server's name and put the IP in “Connect via IP”.</td></tr>
+        <tr><td><code>curl: (67)</code></td><td>Username or password rejected.</td></tr>
+        <tr><td><code>530 5.7.0</code></td><td>The server requires STARTTLS before anything is sent.</td></tr>
+        <tr><td><code>535 5.7.139</code></td><td>Microsoft 365: SMTP authentication is turned off for this mailbox or for the whole organisation.</td></tr>
+        <tr><td><code>550 5.7.30</code></td><td>Microsoft 365: password authentication is no longer accepted. You'll need OAuth or a relay.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Ports worth knowing</h2>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">Port</th><th scope="col">Used for</th></tr></thead>
+      <tbody>
+        <tr><td>25</td><td>Server-to-server delivery. Often blocked for outgoing traffic by consumer internet providers.</td></tr>
+        <tr><td>587</td><td>Sending from a client or device, with STARTTLS. This is Microsoft 365's port.</td></tr>
+        <tr><td>465</td><td>Sending with TLS from the first byte (SMTPS).</td></tr>
+        <tr><td>2525</td><td>A fallback port offered by some sending services, handy when 25 and 587 are filtered.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../assets/smtp.js" defer></script>
+</body>
+</html>

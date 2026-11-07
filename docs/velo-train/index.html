@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bike + Train, trips that combine cycling and trains</title>
+<meta name="description" content="A bike and train trip planner for Belgium and 34 European countries, with cycle node networks and RAVeL greenways.">
+<meta property="og:title" content="Bike + Train, trips that combine cycling and trains">
+<meta property="og:description" content="A bike and train trip planner for Belgium and 34 European countries, with cycle node networks and RAVeL greenways.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://greenserver.be/velo-train/">
+<link rel="canonical" href="https://greenserver.be/velo-train/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../#tools">Tools</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <div class="split">
+    <div>
+      <span class="state"><span class="led amber" aria-hidden="true"></span>Coming soon</span>
+      <h1>Bike + Train</h1>
+      <p class="lead">A trip planner that combines cycling and trains, in Belgium and 34 European countries.</p>
+    </div>
+    <figure class="panel" style="margin:0">
+      <svg class="route" viewBox="0 0 400 130" role="img" aria-label="A typical trip: cycle to a station, take the train, then cycle to the destination">
+        <path class="bike" d="M22 72 C 45 50, 85 96, 120 72" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9"/>
+        <path class="train" d="M120 72 H 290" fill="none" stroke-width="9" stroke-linecap="round"/>
+        <path class="bike" d="M290 72 C 318 92, 350 50, 378 72" fill="none" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9"/>
+        <circle class="stop" cx="22" cy="72" r="8" stroke-width="3"/>
+        <rect class="stop" x="110" y="60" width="20" height="24" rx="4" stroke-width="3"/>
+        <rect class="stop" x="280" y="60" width="20" height="24" rx="4" stroke-width="3"/>
+        <circle class="stop" cx="378" cy="72" r="8" stroke-width="3"/>
+        <text class="lab" x="70" y="34" text-anchor="middle">by bike</text>
+        <text class="lab" x="205" y="50" text-anchor="middle">by train</text>
+        <text class="lab" x="334" y="34" text-anchor="middle">by bike</text>
+        <text x="22" y="112" text-anchor="middle" font-size="14">Start</text>
+        <text x="120" y="112" text-anchor="middle" font-size="14">Station</text>
+        <text x="290" y="112" text-anchor="middle" font-size="14">Station</text>
+        <text x="378" y="112" text-anchor="middle" font-size="14">Finish</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>What it can do</h2>
+  <div class="cols">
+    <div>
+      <h3>Pick the right stations</h3>
+      <p>It works out where to get on and off the train so the cycling stays reasonable, using trains you can actually catch at your own pace.</p>
+    </div>
+    <div>
+      <h3>One train, if possible</h3>
+      <p>The no-change mode gives you a ride, one direct train, then another ride. Fewer platforms, less stress with a loaded bike.</p>
+    </div>
+    <div>
+      <h3>Multi-stop trips</h3>
+      <p>Add stops along the way, and choose bike or train for each leg by clicking on the map.</p>
+    </div>
+    <div>
+      <h3>Bikes-on-trains rules</h3>
+      <p>Reservations, extra fees, folding bikes only: the rules change from one country to the next, and the app tells you. Ferry crossings are included.</p>
+    </div>
+  </div>
+
+  <h2>Made for Belgium</h2>
+  <div class="cols">
+    <div>
+      <h3>SNCB timetables</h3>
+      <p>Belgian rail timetables are built into the app and confirmed in real time when the live service responds.</p>
+    </div>
+    <div>
+      <h3>Cycle node network</h3>
+      <p>Enter a sequence of numbered junctions, such as 50, 51, 52, or click them on the map: the app builds the route, including getting there by bike or train.</p>
+    </div>
+    <div>
+      <h3>RAVeL greenways</h3>
+      <p>Follow a RAVeL line or another greenway, end to end or only between your start and finish.</p>
+    </div>
+    <div>
+      <h3>Four languages</h3>
+      <p>English, French, Dutch and German.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>When will it be online?</h2>
+    <p>The app already works, just not publicly yet: bike routing needs a server that can keep up. It will land here, on greenserver.be.</p>
+
+    <h2>Where the data comes from</h2>
+    <ul>
+      <li>Maps and bike routing: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.</li>
+      <li>Belgian trains: SNCB timetables and <a href="https://irail.be">iRail</a>.</li>
+      <li>Trains across Europe: <a href="https://transitous.org">Transitous</a>.</li>
+      <li>Cycle nodes and RAVeL: Tourisme Wallonie, Toerisme Vlaanderen, visit.brussels and the Public Service of Wallonia.</li>
+    </ul>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+</body>
+</html>
