@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planning with MRP · SAP from the shop floor</title>
+<meta name="description" content="How SAP turns demand into proposals: what MRP calculates, the settings that drive it and the screen planners live in.">
+<meta property="og:title" content="Planning with MRP · SAP from the shop floor">
+<meta property="og:description" content="How SAP turns demand into proposals: what MRP calculates, the settings that drive it and the screen planners live in.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-4/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-4/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-4/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-4/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-4/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 4 of 10</p>
+  <h1>Planning with MRP</h1>
+  <p class="lead">How SAP turns demand into proposals: what MRP calculates, the settings that drive it and the screen planners live in.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Understand the net requirements calculation.</li><li>Know the outputs of MRP: planned orders and purchase requisitions.</li><li>Read the stock/requirements list.</li></ul></div>
+    
+<h2>What MRP calculates</h2>
+<p>MRP (material requirements planning) compares <strong>demand</strong> with <strong>supply</strong>. Demand is made of sales orders and forecasts (planned independent requirements). Supply is the stock and everything already on its way: production orders, purchase orders. What is missing is the <strong>net requirement</strong>.</p>
+<p>For each missing quantity, MRP creates a proposal at the right date. For a product made in-house, it creates a <strong>planned order</strong> and explodes the BOM: the components get <strong>dependent requirements</strong>, and MRP plans them too, level after level. For a purchased part, it creates a <strong>purchase requisition</strong>, which buyers turn into a purchase order.</p>
+
+<h2>The settings that drive it</h2>
+<p>They sit in the MRP views of the material master:</p>
+<ul>
+<li><strong>MRP type</strong>: whether and how the material is planned (PD for MRP, VB for a manual reorder point, ND for no planning).</li>
+<li><strong>Procurement type</strong>: E for in-house production, F for external procurement, X for both.</li>
+<li><strong>Lot size</strong>: EX orders exactly what is missing (lot-for-lot), FX a fixed quantity, HB up to a maximum stock.</li>
+<li><strong>Lead times</strong>: in-house production time, planned delivery time, goods receipt processing time. MRP schedules backwards from the date of need.</li>
+</ul>
+
+<h2>MRP Live and MD04</h2>
+<p>In S/4HANA the planning run is <strong>MRP Live</strong> (<code>MD01N</code>), which runs inside the SAP HANA database and is much faster than the classic run. Planners then work in the <strong>stock/requirements list</strong> (<code>MD04</code>, or the MRP apps in Fiori): stock, requirements and receipts in date order, with exception messages when something is late or excessive.</p>
+<p>When the date comes closer, a planned order is <strong>converted</strong> into a production order: the proposal becomes a real order, ready to be released.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>Customers need 100 pumps next Friday. There are 20 in stock and nothing on order; the lot size is lot-for-lot. MRP proposes a planned order for 80 pumps, scheduled back from Friday by the production time. It explodes the BOM: 80 motors, 80 housings, 640 screws. Motors are bought, so they get a purchase requisition; housings are made in-house, so they get their own planned order.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>Net requirement = demand − stock − receipts already planned.</li><li>In-house: planned orders, with dependent requirements for components. Bought: purchase requisitions.</li><li>MRP type, procurement type, lot size and lead times drive the result.</li><li>MD01N runs MRP Live; MD04 shows the live picture for one material.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="30,31,38" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-3/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-5/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les données de base de la production · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="La fiche article, la nomenclature, le poste de travail, la gamme et la version de fabrication : les cinq fiches sur lesquelles repose la production.">
+<meta property="og:title" content="Les données de base de la production · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="La fiche article, la nomenclature, le poste de travail, la gamme et la version de fabrication : les cinq fiches sur lesquelles repose la production.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-3/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-3/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-3/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-3/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-3/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 3 sur 10</p>
+  <h1>Les données de base de la production</h1>
+  <p class="lead">La fiche article, la nomenclature, le poste de travail, la gamme et la version de fabrication : les cinq fiches sur lesquelles repose la production.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Lire une fiche article et connaître ses principales vues.</li><li>Comprendre comment nomenclature, gamme et poste de travail s&#x27;articulent.</li><li>Savoir pourquoi la version de fabrication compte dans S/4HANA.</li></ul></div>
+    
+<h2>La fiche article</h2>
+<p>Chaque article a une seule fiche : matière première, pièce semi-finie, produit fini, pièce de rechange. Elle est organisée en <strong>vues</strong> que chaque service remplit : données de base, achats, MRP, préparation du travail, qualité, comptabilité, calcul des coûts. La plupart des vues sont tenues par division, car une même pièce peut être planifiée différemment dans deux usines.</p>
+<p>Le <strong>type d'article</strong> fixe les vues autorisées et la façon de valoriser le stock. Les types standard sont ROH (matière première), HALB (semi-fini), FERT (produit fini), HAWA (marchandise) et ERSA (pièce de rechange) ; les entreprises ajoutent souvent les leurs.</p>
+
+<h2>Nomenclature, poste de travail, gamme</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Fiche</th><th scope="col">Répond à la question</th><th scope="col">Contient</th></tr></thead>
+<tbody>
+<tr><td>Nomenclature (BOM)</td><td>De quoi est-il fait ?</td><td>Les composants et leurs quantités pour une quantité de base du produit</td></tr>
+<tr><td>Poste de travail (work center)</td><td>Où le travail est-il fait ?</td><td>Une machine, une ligne ou une équipe, avec sa capacité, ses horaires et ses taux de coût</td></tr>
+<tr><td>Gamme (routing)</td><td>Comment est-il fait ?</td><td>La suite des opérations, chacune sur un poste de travail, avec des temps standard de réglage, machine et main-d'œuvre</td></tr>
+</tbody></table></div>
+<p>Chaque opération a une <strong>clé de commande</strong> (control key), qui indique par exemple si elle est ordonnancée, valorisée et doit être confirmée, ou si elle est sous-traitée.</p>
+
+<h2>La version de fabrication</h2>
+<p>Un produit peut avoir deux nomenclatures (deux conceptions) ou deux gammes (deux lignes). La <strong>version de fabrication</strong> (production version) indique quelle nomenclature et quelle gamme vont ensemble, pour quelle période et quelles quantités. Dans S/4HANA, elle est obligatoire pour les articles fabriqués en interne : c'est par elle que le MRP trouve la nomenclature. Un article sans version de fabrication valide ne sera pas planifié correctement.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>La pompe finie P-200 (type FERT) a une nomenclature avec un moteur, un corps de pompe et huit vis. Sa gamme comporte l&#x27;opération 10, montage sur le poste ASSY1, et l&#x27;opération 20, test sur le poste TEST1. La version de fabrication 0001 relie cette nomenclature et cette gamme. Le banc de test du poste TEST1 est ce que voient l&#x27;automate et la supervision ; dans SAP, c&#x27;est un poste de travail avec une capacité.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Une fiche article par article, en vues, surtout par division.</li><li>Nomenclature : de quoi il est fait. Gamme : comment. Poste de travail : où.</li><li>La clé de commande décide du traitement de chaque opération.</li><li>Dans S/4HANA, sans version de fabrication, pas de planification correcte.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="20,24,28" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-2/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-4/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

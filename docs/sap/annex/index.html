@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moving to SAP S/4HANA · SAP from the shop floor</title>
+<meta name="description" content="Optional annex: why companies are moving now, the three ways in, how such a project runs, and what industrial IT should prepare on the shop floor side.">
+<meta property="og:title" content="Moving to SAP S/4HANA · SAP from the shop floor">
+<meta property="og:description" content="Optional annex: why companies are moving now, the three ways in, how such a project runs, and what industrial IT should prepare on the shop floor side.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/annex/">
+<link rel="canonical" href="https://greenserver.be/sap/annex/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/annex/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/annexe/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/annexe/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Annex</p>
+  <h1>Moving to SAP S/4HANA</h1>
+  <p class="lead">Optional annex: why companies are moving now, the three ways in, how such a project runs, and what industrial IT should prepare on the shop floor side.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Know why so many companies are moving to S/4HANA now.</li><li>Tell a new implementation, a system conversion and a selective data transition apart.</li><li>Prepare the shop floor side of the project: interfaces, identifiers, cutover.</li></ul></div>
+    
+<h2>Why now</h2>
+<ul>
+<li><strong>The end of SAP ECC.</strong> SAP's mainstream maintenance for ECC ends at the end of 2027. Optional extended maintenance, at a higher price, runs until the end of 2030. SAP's investment goes to S/4HANA, which SAP has committed to until at least 2040.</li>
+<li><strong>One system for the group.</strong> Groups often replace local ERPs, SAP or not, with one S/4HANA template, so that every site works and reports the same way.</li>
+</ul>
+
+<h2>Three ways in</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Approach</th><th scope="col">What it means</th><th scope="col">Typical case</th></tr></thead>
+<tbody>
+<tr><td>New implementation (greenfield)</td><td>A new S/4HANA system built on standard processes; only selected data is migrated.</td><td>The only way from a non-SAP ERP; also chosen to start clean.</td></tr>
+<tr><td>System conversion (brownfield)</td><td>An existing SAP ECC system is converted to S/4HANA, with its data and settings.</td><td>A healthy ECC system, when history must be kept.</td></tr>
+<tr><td>Selective data transition</td><td>A new system shell, with chosen data, companies or periods brought over.</td><td>Groups merging systems or splitting a business.</td></tr>
+</tbody></table></div>
+
+<h2>The group template</h2>
+<p>In a group, a central team usually designs a <strong>global template</strong>: processes, settings and master data rules shared by all sites, then rolled out site after site. Each site adapts its local ways to the standard rather than the other way round: this is <strong>fit-to-standard</strong>. SAP also talks about a <strong>clean core</strong>: keep the SAP system as standard as possible and put company-specific extensions beside it, so that future upgrades stay easy.</p>
+
+<h2>How the project runs</h2>
+<p>Most projects follow <strong>SAP Activate</strong>, SAP's method, in six phases:</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Phase</th><th scope="col">What happens</th></tr></thead>
+<tbody>
+<tr><td>Discover</td><td>Understand what S/4HANA offers and build the business case.</td></tr>
+<tr><td>Prepare</td><td>Set up the team, the plan, the systems and the governance.</td></tr>
+<tr><td>Explore</td><td>Fit-to-standard workshops: key users see the standard processes in a sandbox and list the real gaps.</td></tr>
+<tr><td>Realize</td><td>Configure, build interfaces and extensions, run test data loads, test everything together.</td></tr>
+<tr><td>Deploy</td><td>Train users, rehearse and run the cutover, go live.</td></tr>
+<tr><td>Run</td><td>Hypercare right after go-live, then normal support and improvements.</td></tr>
+</tbody></table></div>
+
+<h2>Data migration</h2>
+<ol class="steps">
+<li><strong>Cleanse</strong> the old data: duplicates, obsolete parts, suppliers nobody uses anymore.</li>
+<li><strong>Map</strong> old codes to new ones: material numbers, work centers, storage locations, units of measure.</li>
+<li><strong>Load</strong> with the tools of the project, often the SAP S/4HANA Migration Cockpit, which works with one template per type of data.</li>
+<li><strong>Check and sign off</strong>: business owners confirm that the loaded data is right. Several test loads come before the real one.</li>
+</ol>
+<p>At cutover, open items move too: open orders, open purchase orders, and the stock, usually counted just before.</p>
+
+<h2>Checklist for industrial IT</h2>
+<ul class="checklist">
+<li><strong>List every flow</strong> between the old ERP and the plant: orders sent to the MES, confirmations, label printing, scanners, scales, quality results, maintenance counters. For each: direction, protocol, frequency, owner.</li>
+<li><strong>Check identifiers and field lengths.</strong> Production order numbers have 12 characters in SAP; material numbers can have up to 40 in S/4HANA. MES tables, HMI fields, PLC strings and barcodes sized for the old ERP may cut them.</li>
+<li><strong>Agree on storage locations and work centers</strong> with the project, so that what the floor sees matches what SAP knows.</li>
+<li><strong>Rebuild the interfaces</strong> with SAP's channels (IDoc, BAPI, OData) and test them end to end in the test system, with real scanners and printers.</li>
+<li><strong>Secure the new conduits</strong>: firewall rules, technical users, encryption, documentation (lesson 10).</li>
+<li><strong>Plan the cutover with production</strong>: reduced output or a stop, stock count, master data freeze, and a fallback plan if go-live is postponed.</li>
+<li><strong>Prepare hypercare</strong>: who to call, how interface errors are watched, how fast they are fixed.</li>
+<li><strong>Train key users and operators</strong>: screens, labels and scanner steps all change.</li>
+</ul>
+
+    <aside class="example"><h2>On the shop floor</h2><p>A group decides to replace a site&#x27;s local ERP with its S/4HANA template. Industrial IT lists fourteen flows with the plant. Testing shows that the MES expects 8-digit order numbers while SAP sends 12: the MES table and the label layouts are changed before go-live. After two test loads, the site goes live over a long weekend, right after a stock count. In the first week, thirty IDocs fail on a unit of measure mapping; hypercare fixes the mapping and reprocesses them.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>ECC mainstream maintenance ends at the end of 2027; extended maintenance runs until 2030.</li><li>From a non-SAP ERP: new implementation. From ECC: conversion, new implementation or selective transition.</li><li>SAP Activate: Discover, Prepare, Explore (fit-to-standard), Realize, Deploy, Run.</li><li>For industrial IT: list the flows, check field lengths, rebuild and test interfaces, plan cutover and hypercare.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Six questions on this annex. Pick an answer to see if it is right. They are not part of the final quiz.</p>
+    <div class="qcheck" data-ids="100,101,102,103,104,105" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-10/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/quiz/">Final quiz →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

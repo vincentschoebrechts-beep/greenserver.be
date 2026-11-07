@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Master data for production · SAP from the shop floor</title>
+<meta name="description" content="The material master, the bill of materials, the work center, the routing and the production version: the five records production relies on.">
+<meta property="og:title" content="Master data for production · SAP from the shop floor">
+<meta property="og:description" content="The material master, the bill of materials, the work center, the routing and the production version: the five records production relies on.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-3/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-3/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-3/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-3/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-3/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 3 of 10</p>
+  <h1>Master data for production</h1>
+  <p class="lead">The material master, the bill of materials, the work center, the routing and the production version: the five records production relies on.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Read a material master and know its main views.</li><li>Understand how BOM, routing and work center fit together.</li><li>Know why the production version matters in S/4HANA.</li></ul></div>
+    
+<h2>The material master</h2>
+<p>Every item has one material master record: raw material, semi-finished part, finished product, spare part. It is organised in <strong>views</strong> that each department fills in: basic data, purchasing, MRP, work scheduling, quality management, accounting, costing. Most views are maintained per plant, because the same part can be planned differently in two factories.</p>
+<p>The <strong>material type</strong> sets which views are allowed and how stock is valued. The standard types are ROH (raw material), HALB (semi-finished), FERT (finished product), HAWA (trading goods) and ERSA (spare parts); companies often add their own.</p>
+
+<h2>Bill of materials, work center, routing</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Record</th><th scope="col">Answers the question</th><th scope="col">Contains</th></tr></thead>
+<tbody>
+<tr><td>Bill of materials (BOM)</td><td>What is it made of?</td><td>Components and quantities for a base quantity of the product</td></tr>
+<tr><td>Work center</td><td>Where is the work done?</td><td>A machine, line or team, with its capacity, its working times and its cost rates</td></tr>
+<tr><td>Routing</td><td>How is it made?</td><td>The sequence of operations, each at a work center, with standard times for setup, machine and labour</td></tr>
+</tbody></table></div>
+<p>Each operation has a <strong>control key</strong>, which says for example whether it is scheduled, costed and must be confirmed, or whether it is done by a subcontractor.</p>
+
+<h2>The production version</h2>
+<p>A product may have two BOMs (two designs) or two routings (two lines). The <strong>production version</strong> says which BOM and which routing go together, for which period and which lot sizes. In S/4HANA it is mandatory for materials produced in-house: MRP finds the BOM through it. A material without a valid production version will not be planned correctly.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>The finished pump P-200 (type FERT) has a BOM with one motor, one housing and eight screws. Its routing has operation 10, assembly at work center ASSY1, and operation 20, test at work center TEST1. Production version 0001 links that BOM and that routing. The test bench at TEST1 is what the PLC and the supervision see; in SAP it is a work center with a capacity.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>One material master per item, in views, mostly per plant.</li><li>BOM: what it is made of. Routing: how. Work center: where.</li><li>The control key decides how each operation is handled.</li><li>In S/4HANA, no production version means no correct planning.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="20,24,28" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-2/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-4/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

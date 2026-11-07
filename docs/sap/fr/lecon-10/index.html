@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connecter et sécuriser l&#x27;atelier · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Comment les données circulent vraiment entre SAP et les machines, quels canaux existent, et comment éviter que ce lien devienne une porte d&#x27;entrée dans l&#x27;usine.">
+<meta property="og:title" content="Connecter et sécuriser l&#x27;atelier · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Comment les données circulent vraiment entre SAP et les machines, quels canaux existent, et comment éviter que ce lien devienne une porte d&#x27;entrée dans l&#x27;usine.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-10/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-10/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-10/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-10/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-10/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 10 sur 10</p>
+  <h1>Connecter et sécuriser l&#x27;atelier</h1>
+  <p class="lead">Comment les données circulent vraiment entre SAP et les machines, quels canaux existent, et comment éviter que ce lien devienne une porte d&#x27;entrée dans l&#x27;usine.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Connaître les canaux entre SAP et l&#x27;usine.</li><li>Suivre un compteur de ligne jusqu&#x27;à une confirmation dans SAP.</li><li>Appliquer les règles de sécurité de base au lien SAP.</li></ul></div>
+    
+<h2>Traduire entre deux mondes</h2>
+<p>Un automate connaît des variables, des compteurs et des événements. SAP connaît des ordres, des confirmations et des mouvements de stock. Entre les deux, quelque chose traduit : un <strong>MES</strong>, une passerelle ou un logiciel intermédiaire.</p>
+<figure class="diagram"><svg viewBox="0 0 700 130" role="img" aria-label="Flux de données entre l&#x27;automate, le MES et SAP"><defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs><rect class="box" x="1" y="30" width="190" height="70" rx="4"/><text class="t" x="96" y="60" text-anchor="middle">Automate et SCADA</text><text class="lab" x="96" y="82" text-anchor="middle">variables, compteurs</text><rect class="box" x="255" y="30" width="190" height="70" rx="4"/><text class="t" x="350" y="60" text-anchor="middle">MES ou passerelle</text><text class="lab" x="350" y="82" text-anchor="middle">traduit</text><rect class="hot" x="509" y="30" width="190" height="70" rx="4"/><text class="t" x="604" y="60" text-anchor="middle">SAP S/4HANA</text><text class="lab" x="604" y="82" text-anchor="middle">ordres, confirmations</text><g style="color:var(--muted)" stroke="currentColor" stroke-width="2" fill="none"><line x1="193" y1="65" x2="253" y2="65" marker-start="url(#fl)" marker-end="url(#fl)"/><line x1="447" y1="65" x2="507" y2="65" marker-start="url(#fl)" marker-end="url(#fl)"/></g><text class="lab" x="223" y="122" text-anchor="middle">OPC UA</text><text class="lab" x="477" y="122" text-anchor="middle">IDoc · RFC · OData</text></svg><figcaption>SAP descend les ordres vers le MES ; le MES remonte confirmations et mouvements de stock. SAP ne parle jamais à l&#x27;automate.</figcaption></figure>
+
+<h2>Les canaux</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Canal</th><th scope="col">En quelques mots</th></tr></thead>
+<tbody>
+<tr><td>IDoc</td><td>Le format de SAP pour les messages asynchrones : envoyés, mis en file, traités plus tard. <code>LOIPRO</code> sert couramment à envoyer les ordres de fabrication à un MES.</td></tr>
+<tr><td>BAPI par RFC</td><td>Des fonctions de SAP que des programmes externes appellent et qui répondent immédiatement, par exemple pour saisir une confirmation.</td></tr>
+<tr><td>API OData</td><td>Des services web en HTTPS, documentés sur le SAP Business Accelerator Hub, comme les API des ordres de fabrication et de leurs confirmations.</td></tr>
+<tr><td>Connecteurs SAP</td><td>SAP Plant Connectivity (PCo) tourne comme service Windows dans le réseau de l'usine et lit notamment les serveurs OPC UA. Avec SAP Digital Manufacturing, le MES de SAP dans le cloud, c'est le Production Connector qui joue ce rôle.</td></tr>
+</tbody></table></div>
+
+<h2>Du compteur à la confirmation</h2>
+<ol class="steps">
+<li>SAP lance l'ordre et l'envoie au MES (par exemple en IDoc <code>LOIPRO</code>).</li>
+<li>L'automate compte les pièces bonnes et rejetées ; le MES lit les compteurs en OPC UA.</li>
+<li>À la fin de l'opération, le MES saisit une confirmation avec quantité bonne et rebut (BAPI ou OData).</li>
+<li>SAP prélève rétroactivement les composants et comptabilise l'entrée de marchandises.</li>
+<li>Les messages en échec sont surveillés : <code>BD87</code> affiche les IDocs par statut et les retraite une fois la cause corrigée.</li>
+</ol>
+
+<h2>Sécuriser le lien</h2>
+<ul>
+<li><strong>Zones et conduits.</strong> Au sens de l'IEC 62443, le réseau bureautique et le réseau de l'usine sont des zones distinctes, et le lien SAP est un conduit entre elles : il passe par une DMZ, il est filtré et il est documenté.</li>
+<li><strong>SAP ne parle jamais aux automates.</strong> Il parle au MES ou à la passerelle ; seuls ceux-ci parlent aux automates.</li>
+<li><strong>Un utilisateur technique par interface.</strong> Utilisez un utilisateur système ou de communication, qui ne peut pas ouvrir de session interactive, avec les seuls droits dont l'interface a besoin.</li>
+<li><strong>Chiffrer.</strong> SNC pour le RFC, HTTPS pour l'OData.</li>
+<li><strong>Surveiller.</strong> Les IDocs en échec et les appels refusés sont souvent le premier signe d'un problème, d'un côté comme de l'autre.</li>
+</ul>
+
+    <aside class="example"><h2>En atelier</h2><p>Une usine connecte ses lignes de montage à S/4HANA. Le MES tourne dans le réseau de l&#x27;usine et lit les automates en OPC UA. Il échange avec SAP uniquement via un serveur de la DMZ, avec un utilisateur de communication dédié et un chiffrement SNC. Quand l&#x27;équipe réseau voit un nouveau flux du réseau bureautique directement vers un automate, elle sait que ce n&#x27;est pas le lien SAP : celui-là ne va jamais là.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Un MES ou une passerelle traduit les signaux machine en événements de gestion.</li><li>IDoc : asynchrone. BAPI/RFC : immédiat. OData : API en HTTPS. PCo et le Production Connector lisent l&#x27;OPC UA.</li><li>Compteur, MES, confirmation, prélèvement rétroactif, entrée en stock : rien à taper.</li><li>Zones et conduits, DMZ, utilisateurs techniques dédiés, chiffrement et surveillance.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="90,91,97" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-9/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/qcm/">QCM final →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

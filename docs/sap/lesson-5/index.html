@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The production order · SAP from the shop floor</title>
+<meta name="description" content="The life of a production order from creation to closing, its statuses, and the goods movements and confirmations that the shop floor feeds.">
+<meta property="og:title" content="The production order · SAP from the shop floor">
+<meta property="og:description" content="The life of a production order from creation to closing, its statuses, and the goods movements and confirmations that the shop floor feeds.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-5/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-5/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-5/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-5/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-5/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 5 of 10</p>
+  <h1>The production order</h1>
+  <p class="lead">The life of a production order from creation to closing, its statuses, and the goods movements and confirmations that the shop floor feeds.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Follow a production order through its statuses.</li><li>Know when components are issued and finished goods received.</li><li>Understand what a confirmation reports.</li></ul></div>
+    
+<h2>Creation and release</h2>
+<p>A production order is created by converting a planned order, or by hand (<code>CO01</code>). SAP copies the <strong>operations</strong> of the routing and the <strong>components</strong> of the BOM, through the production version, and reserves the components. An availability check tells whether the parts are there.</p>
+<p>The <strong>release</strong> is the moment the order may be executed: shop papers can be printed, the order can be sent to the MES, and SAP accepts goods movements and confirmations.</p>
+
+<h2>Statuses</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Status</th><th scope="col">Meaning</th></tr></thead>
+<tbody>
+<tr><td><code>CRTD</code></td><td>Created: planned, not yet executable</td></tr>
+<tr><td><code>REL</code></td><td>Released: can be executed</td></tr>
+<tr><td><code>PCNF</code> / <code>CNF</code></td><td>Partially confirmed / confirmed</td></tr>
+<tr><td><code>PDLV</code> / <code>DLV</code></td><td>Partially delivered / delivered to stock</td></tr>
+<tr><td><code>TECO</code></td><td>Technically completed: no more production expected</td></tr>
+<tr><td><code>CLSD</code></td><td>Closed: costs settled, nothing more can be posted</td></tr>
+</tbody></table></div>
+
+<h2>Goods issue, confirmation, goods receipt</h2>
+<ol class="steps">
+<li><strong>Goods issue</strong> (movement type 261): the components leave stock and are charged to the order. With <strong>backflushing</strong>, this happens automatically when the operation is confirmed.</li>
+<li><strong>Confirmation</strong> (<code>CO11N</code>): for each operation, the good quantity (yield), scrap, rework and the times actually spent. A confirmation can be partial or final. <code>CO13</code> cancels one.</li>
+<li><strong>Goods receipt</strong> (movement type 101): the finished products enter stock. It can be posted automatically with the confirmation of the last operation.</li>
+<li><strong>Closing</strong>: the order is set to TECO, then its costs are settled to controlling, which shows the difference between planned and actual cost.</li>
+</ol>
+<p>To follow many orders at once, <code>COOIS</code> lists orders, operations and components with their statuses.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>A counter on the assembly line counts 82 pumps for order 1000123, and the test bench rejects 2. At the end of the shift, the MES sends a confirmation for operation 20: yield 80, scrap 2, machine time 7.5 hours. SAP backflushes the screws and motors, and posts the goods receipt of 80 pumps automatically. Nobody typed anything in SAP.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>Operations come from the routing, components from the BOM.</li><li>Release opens the order to confirmations and goods movements.</li><li>261 issues components, 101 receives finished goods; backflushing automates the issue.</li><li>A confirmation reports yield, scrap and times; TECO ends production, settlement closes the costs.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="40,44,46" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-4/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-6/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

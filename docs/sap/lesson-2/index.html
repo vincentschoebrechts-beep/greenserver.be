@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finding your way around SAP · SAP from the shop floor</title>
+<meta name="description" content="The two ways of working in SAP, the transaction codes everyone uses, and the difference between master data and transactional data.">
+<meta property="og:title" content="Finding your way around SAP · SAP from the shop floor">
+<meta property="og:description" content="The two ways of working in SAP, the transaction codes everyone uses, and the difference between master data and transactional data.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-2/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-2/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-2/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-2/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-2/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 2 of 10</p>
+  <h1>Finding your way around SAP</h1>
+  <p class="lead">The two ways of working in SAP, the transaction codes everyone uses, and the difference between master data and transactional data.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Tell SAP Fiori and SAP GUI apart.</li><li>Use transaction codes and the main keyboard shortcuts.</li><li>Distinguish master data from transactional data.</li></ul></div>
+    
+<h2>Two user interfaces</h2>
+<p><strong>SAP Fiori</strong> is the web interface. You open the Fiori launchpad in a browser and see tiles: each tile is an app made for one task, for example confirming a production operation. Apps are role-based: a storekeeper and a planner do not see the same tiles. Fiori works on a PC and on a tablet.</p>
+<p><strong>SAP GUI</strong> is the classic Windows client. Here you work with <strong>transaction codes</strong>: short codes typed in the command field at the top left. Both interfaces work on the same data, and many people use both.</p>
+
+<h2>Transaction codes</h2>
+<ul>
+<li>Type the code and press Enter from the main menu, for example <code>MM03</code> to display a material.</li>
+<li><code>/n</code> before the code leaves the current transaction first: <code>/nMM03</code>.</li>
+<li><code>/o</code> opens the transaction in a new session (window): <code>/oMD04</code>.</li>
+<li>Many codes follow the pattern create, change, display: <code>MM01</code>, <code>MM02</code>, <code>MM03</code> for materials, <code>CO01</code>, <code>CO02</code>, <code>CO03</code> for production orders. When you only want to look, use the display code: you cannot break anything.</li>
+</ul>
+<p>Two keys help everywhere in SAP GUI: <strong>F1</strong> explains the field where the cursor is, <strong>F4</strong> lists its possible values.</p>
+
+<h2>Master data and transactional data</h2>
+<p><strong>Master data</strong> describes things that last: materials, bills of materials, routings, work centers, suppliers, equipment. It is created once and changed rarely.</p>
+<p><strong>Transactional data</strong> records events: a production order, a confirmation, a goods movement. Each event creates a <strong>document</strong> with a number, a date and a user. A goods movement, for example, creates a material document. Documents are not deleted: a mistake is corrected by a reversal, so the history stays complete.</p>
+
+<h2>Roles and authorisations</h2>
+<p>What you can see and do depends on your roles. If an app or a transaction is missing, your role probably does not include it. To learn safely, ask for display-only roles in a test or training system.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>An operator scans a production order at the end of an operation; the MES sends the confirmation to SAP. The production order is transactional data, the material and the routing it uses are master data, and the confirmation creates a new document that anyone with the right role can display.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>Fiori: web apps by role. SAP GUI: classic client with transaction codes.</li><li>/n opens a code in the same window, /o in a new one; 01, 02, 03 often mean create, change, display.</li><li>F1 explains a field, F4 lists its values.</li><li>Master data lasts; transactional data records events in numbered documents.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="10,13,14" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-1/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-3/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

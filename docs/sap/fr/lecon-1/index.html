@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAP dans l&#x27;usine · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Ce qu&#x27;est un ERP, où se place SAP S/4HANA parmi les systèmes d&#x27;une usine, et comment SAP décrit une entreprise.">
+<meta property="og:title" content="SAP dans l&#x27;usine · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Ce qu&#x27;est un ERP, où se place SAP S/4HANA parmi les systèmes d&#x27;une usine, et comment SAP décrit une entreprise.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-1/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-1/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-1/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-1/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-1/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 1 sur 10</p>
+  <h1>SAP dans l&#x27;usine</h1>
+  <p class="lead">Ce qu&#x27;est un ERP, où se place SAP S/4HANA parmi les systèmes d&#x27;une usine, et comment SAP décrit une entreprise.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Situer SAP parmi les niveaux d&#x27;une usine.</li><li>Savoir ce que SAP fait, et ce qu&#x27;il ne fait pas.</li><li>Reconnaître les principales unités organisationnelles : mandant, société, division, magasin.</li></ul></div>
+    
+<h2>Un ERP, en une phrase</h2>
+<p>Un ERP (progiciel de gestion intégré) rassemble toute l'entreprise dans une seule base de données : ventes, achats, production, stocks, maintenance, qualité et comptabilité. Quand le magasin sort une pièce, le stock change, le coût de l'ordre change et la comptabilité change, tout en même temps. SAP S/4HANA est l'ERP actuel de SAP. Il succède à SAP ECC, la génération précédente, et ne tourne que sur SAP HANA, la base de données en mémoire de SAP. Il peut être installé sur les serveurs de l'entreprise ou utilisé comme service dans le cloud.</p>
+
+<h2>Où se place SAP</h2>
+<p>On décrit souvent une usine en niveaux, des capteurs en bas jusqu'aux systèmes de gestion en haut : c'est le modèle ISA-95. SAP se trouve tout en haut.</p>
+<figure class="diagram"><svg viewBox="0 0 660 320" role="img" aria-label="Les cinq niveaux d&#x27;une usine, des capteurs à l&#x27;ERP, avec leurs échelles de temps"><rect class="hot" x="1" y="1" width="480" height="52" rx="4"/><text class="t" x="16" y="25">Niveau 4 · ERP (SAP S/4HANA)</text><text class="lab" x="16" y="44">Ordres, articles, stocks, coûts</text><text class="lab" x="500" y="32">jours, heures</text><rect class="box" x="1" y="67" width="480" height="52" rx="4"/><text class="t" x="16" y="91">Niveau 3 · MES</text><text class="lab" x="16" y="110">Exécution, suivi, qualité en atelier</text><text class="lab" x="500" y="98">minutes</text><rect class="box" x="1" y="133" width="480" height="52" rx="4"/><text class="t" x="16" y="157">Niveau 2 · SCADA et IHM</text><text class="lab" x="16" y="176">Supervision des lignes et des machines</text><text class="lab" x="500" y="164">secondes</text><rect class="box" x="1" y="199" width="480" height="52" rx="4"/><text class="t" x="16" y="223">Niveau 1 · Automates</text><text class="lab" x="16" y="242">Contrôle-commande du procédé</text><text class="lab" x="500" y="230">millisecondes</text><rect class="box" x="1" y="265" width="480" height="52" rx="4"/><text class="t" x="16" y="289">Niveau 0 · Capteurs et actionneurs</text><text class="lab" x="16" y="308">Le procédé physique</text><text class="lab" x="500" y="296">temps réel</text></svg><figcaption>Plus le niveau est haut, plus le rythme est lent : SAP planifie en jours et en heures, un automate réagit en millisecondes.</figcaption></figure>
+<p>SAP sait ce qu'il faut fabriquer, avec quelles pièces, pour quand, et ce que ça coûte. Il ne pilote pas les machines : il ne lit pas un capteur toutes les 10 ms, et il ne doit jamais écrire dans un automate. Entre SAP et les machines, il y a en général un MES (niveau 3), ou au moins une passerelle.</p>
+
+<h2>Comment SAP décrit une entreprise</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Unité</th><th scope="col">Ce que c'est</th><th scope="col">Exemple</th></tr></thead>
+<tbody>
+<tr><td>Mandant (client)</td><td>Un environnement autonome dans le système SAP, avec ses propres données.</td><td>Mandant 100 : production</td></tr>
+<tr><td>Société (company code)</td><td>Une entité juridique avec sa propre comptabilité.</td><td>La société belge</td></tr>
+<tr><td>Division (plant)</td><td>Une usine ou un site : l'unité de la production, de la planification et du stock.</td><td>Division 1100</td></tr>
+<tr><td>Magasin (storage location)</td><td>Un endroit où le stock est rangé dans une division.</td><td>0001 matières premières, 0002 produits finis</td></tr>
+</tbody></table></div>
+
+<h2>Les modules dont vous entendrez parler</h2>
+<p>On décrit toujours SAP par ses modules historiques : <strong>PP</strong> (planification de la production), <strong>MM</strong> (gestion des articles : achats et stocks), <strong>QM</strong> (qualité), <strong>PM</strong> (maintenance), <strong>SD</strong> (ventes et distribution) et <strong>FI/CO</strong> (finance et contrôle de gestion). Dans S/4HANA, ils forment un seul système qui partage les mêmes données, mais les abréviations sont partout.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Une usine avec deux lignes de fabrication de pompes est la division 1100 dans SAP. Les matières premières sont dans le magasin 0001, les racks en bord de ligne dans le 0003, les pompes finies dans le 0002. Les automates et la supervision ne connaissent aucun de ces numéros : c&#x27;est le MES, ou les personnes, qui font le lien.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>SAP S/4HANA est un ERP : niveau 4, des heures et des jours, pas des millisecondes.</li><li>Il ne pilote jamais les machines ; un MES ou une passerelle se place entre les deux.</li><li>Mandant, société, division et magasin décrivent l&#x27;entreprise.</li><li>PP, MM, QM, PM, SD et FI/CO sont les noms de modules encore utilisés tous les jours.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="0,1,6" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <span></span>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-2/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

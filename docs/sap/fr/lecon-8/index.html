@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La maintenance · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Comment SAP PM décrit les installations, enregistre les pannes, planifie les réparations et déclenche la maintenance préventive, y compris à partir des compteurs des machines.">
+<meta property="og:title" content="La maintenance · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Comment SAP PM décrit les installations, enregistre les pannes, planifie les réparations et déclenche la maintenance préventive, y compris à partir des compteurs des machines.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-8/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-8/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-8/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-8/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-8/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 8 sur 10</p>
+  <h1>La maintenance</h1>
+  <p class="lead">Comment SAP PM décrit les installations, enregistre les pannes, planifie les réparations et déclenche la maintenance préventive, y compris à partir des compteurs des machines.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Distinguer postes techniques et équipements.</li><li>Suivre une panne depuis l&#x27;avis jusqu&#x27;à l&#x27;ordre.</li><li>Comprendre la maintenance préventive selon compteur.</li></ul></div>
+    
+<h2>Les objets techniques</h2>
+<p>Un <strong>poste technique</strong> (functional location) est un emplacement de la structure technique de l'usine, organisé en arborescence : site, ligne, station. Un <strong>équipement</strong> est un objet physique individuel, comme une pompe ou un moteur, avec son propre numéro de série et son historique. Il est installé sur un poste technique et peut être déplacé vers un autre, en emportant son historique.</p>
+
+<h2>Avis et ordre</h2>
+<ol class="steps">
+<li><strong>Avis</strong> (<code>IW21</code>) : quelqu'un signale un besoin. Dans le standard SAP, M1 est une demande d'entretien, M2 un avis de panne, M3 un compte rendu d'activité.</li>
+<li><strong>Ordre d'entretien</strong> (<code>IW31</code>) : le travail est planifié, avec les opérations, les pièces de rechange et les prestations externes. L'ordre rassemble les confirmations de temps et les coûts réels.</li>
+<li><strong>Clôture</strong> : le technicien confirme le travail, note le dommage et la cause, et l'ordre est clôturé.</li>
+</ol>
+
+<h2>La maintenance préventive</h2>
+<p>Les <strong>plans d'entretien</strong> créent automatiquement des ordres ou des avis :</p>
+<ul>
+<li><strong>Périodiques</strong> : tous les trois mois, tous les ans.</li>
+<li><strong>Selon compteur</strong> : tous les 10 000 cycles, toutes les 500 heures de marche.</li>
+</ul>
+<p>Les compteurs sont des <strong>points de mesure</strong> sur l'équipement. Chaque relevé crée un <strong>document de mesure</strong> ; quand le compteur atteint la prochaine échéance, le plan génère le travail.</p>
+
+<h2>Un travail tout trouvé pour l'informatique industrielle</h2>
+<p>Les automates et la supervision comptent déjà les cycles et les heures de marche. Envoyer ces compteurs à SAP sous forme de documents de mesure, par le MES ou une interface, remplace les relevés manuels et permet à la maintenance de suivre l'usage réel de chaque machine.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>La presse de la ligne 1 est le poste technique 1100-L1-PRESSE ; sa pompe hydraulique est un équipement avec un compteur d&#x27;heures de marche. Chaque nuit, une interface lit le compteur d&#x27;heures dans la supervision et crée un document de mesure. À 2 000 heures, le plan d&#x27;entretien crée un ordre de remplacement du filtre, avec le filtre déjà prévu comme pièce de rechange.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Poste technique : un emplacement. Équipement : un objet qui peut passer d&#x27;un emplacement à l&#x27;autre.</li><li>Avis (IW21) pour signaler, ordre (IW31) pour planifier, exécuter et rassembler les coûts.</li><li>Les plans d&#x27;entretien sont périodiques ou selon compteur.</li><li>Points de mesure et documents de mesure peuvent être alimentés par les compteurs des automates.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="71,72,76" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-7/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-9/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

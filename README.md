@@ -12,6 +12,7 @@ Site statique en anglais, publié par GitHub Pages depuis le dossier `docs/` de 
 | `/velo-train/` | `velo-train/index.html` | Présentation de Bike + Train |
 | `/smtp/` | `smtp/index.html` + `assets/smtp.js` | Testeur SMTP (DNS du domaine expéditeur, commandes de test) |
 | `/files/` | `files/` | Documents chiffrés, accessibles par mot de passe |
+| `/sap/`, `/sap/fr/` | `sap/` | Formation gratuite « SAP from the shop floor / SAP vu de l'atelier » : 10 leçons, annexe, QCM final |
 | toute adresse inconnue | `404.html` | Page d'erreur |
 
 `assets/` contient la feuille de style, l'icône et les polices (Barlow, IBM Plex Mono, licence SIL OFL), sans appel à Google Fonts. `CNAME` contient le domaine, `.nojekyll` dit à GitHub de servir les fichiers tels quels.
@@ -33,3 +34,14 @@ Le script demande le mot de passe et reconstruit `docs/files/data/` à partir du
 ## DNS
 
 Le domaine est chez EasyHost. Les enregistrements A, AAAA et `www` pointent vers GitHub Pages. **Ne pas toucher aux enregistrements SMTP2GO** (CNAME `em…`, `s…._domainkey`, DMARC) : ils servent aux mails de l'automate.
+
+## Formation SAP
+
+Les pages de `docs/sap/` et la banque de questions `docs/assets/sap-questions.js` sont générées : ne les modifiez pas à la main. Le contenu se trouve dans `outils/sap_course/` (`content_en.py`, `content_fr.py`, `questions.py`). Après une modification :
+
+```
+python outils/sap_course/build.py
+git add docs outils
+git commit -m "Formation SAP : …"
+git push
+```

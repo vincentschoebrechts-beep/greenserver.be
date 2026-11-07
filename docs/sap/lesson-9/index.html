@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batches and traceability · SAP from the shop floor</title>
+<meta name="description" content="Batches, serial numbers and where-used lists: how SAP answers the question every recall starts with.">
+<meta property="og:title" content="Batches and traceability · SAP from the shop floor">
+<meta property="og:description" content="Batches, serial numbers and where-used lists: how SAP answers the question every recall starts with.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-9/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-9/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-9/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-9/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-9/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 9 of 10</p>
+  <h1>Batches and traceability</h1>
+  <p class="lead">Batches, serial numbers and where-used lists: how SAP answers the question every recall starts with.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Know what batch management brings.</li><li>Tell backward and forward traceability apart.</li><li>Understand why the shop floor makes or breaks traceability.</li></ul></div>
+    
+<h2>Batches</h2>
+<p>A <strong>batch</strong> is a quantity of material made or received under the same conditions and tracked under one number. Batch management is switched on <strong>per material</strong>: only the items that need traceability carry it.</p>
+<p>Batches are described by <strong>characteristics</strong> in their classification: viscosity, colour, supplier batch, and the dates that matter, such as the production date and the <strong>shelf life expiration date</strong> (SLED), which SAP can calculate from the material's shelf life.</p>
+
+<h2>Choosing batches</h2>
+<p>At goods issue, <strong>batch determination</strong> proposes which batches to take, following a strategy: FIFO (first in, first out) or FEFO (first expired, first out), and characteristic values that must match.</p>
+
+<h2>Traceability</h2>
+<ul>
+<li><strong>Backward</strong>: from a product batch to the component batches, and from there to the suppliers.</li>
+<li><strong>Forward</strong>: from a component batch to every product batch that used it, and to every customer who received them. This is what a recall needs.</li>
+</ul>
+<p>The batch where-used list and the <strong>Batch Information Cockpit</strong> (<code>BMBC</code>) show these links.</p>
+
+<h2>Serial numbers</h2>
+<p>A batch tracks a group of units. When each unit must be followed on its own, such as each pump with its own test record, SAP uses <strong>serial numbers</strong>. Batches and serial numbers can be used together.</p>
+
+<h2>The weak link is on the floor</h2>
+<p>SAP only knows the batches that were posted. If the line consumes batch B while SAP records batch A, the traceability is wrong, and nobody will notice until the day it is needed. Scanning batch labels at the line, and letting the MES post the goods issues per batch, is what makes traceability reliable.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>A supplier warns that one batch of seals is faulty. Forward traceability from that seal batch lists the three pump batches that used it, and the deliveries that shipped them. Because the line scans every seal box, the answer takes minutes and covers only the pumps really affected.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>Batches are switched on per material and described by characteristics.</li><li>FIFO takes the oldest batch, FEFO the one that expires first.</li><li>Backward: what went into it. Forward: where it went.</li><li>Traceability is only as good as the batches scanned and posted at the line.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="80,85,89" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-8/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-10/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

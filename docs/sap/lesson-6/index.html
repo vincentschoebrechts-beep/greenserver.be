@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock and goods movements · SAP from the shop floor</title>
+<meta name="description" content="How SAP records every change in stock: movement types, stock types, documents, and the transactions the store uses every day.">
+<meta property="og:title" content="Stock and goods movements · SAP from the shop floor">
+<meta property="og:description" content="How SAP records every change in stock: movement types, stock types, documents, and the transactions the store uses every day.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-6/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-6/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-6/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-6/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-6/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 6 of 10</p>
+  <h1>Stock and goods movements</h1>
+  <p class="lead">How SAP records every change in stock: movement types, stock types, documents, and the transactions the store uses every day.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Know the most common movement types.</li><li>Understand the three stock types.</li><li>Find a material&#x27;s stock and its movements.</li></ul></div>
+    
+<h2>Movement types</h2>
+<p>Every change in stock is a <strong>goods movement</strong>, and every goods movement has a three-digit <strong>movement type</strong> that tells SAP what is happening and how to post it.</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Type</th><th scope="col">Movement</th></tr></thead>
+<tbody>
+<tr><td><code>101</code></td><td>Goods receipt for a purchase order or a production order</td></tr>
+<tr><td><code>261</code></td><td>Goods issue to an order</td></tr>
+<tr><td><code>201</code></td><td>Goods issue to a cost center (consumption without an order)</td></tr>
+<tr><td><code>311</code></td><td>Transfer between storage locations, in one step</td></tr>
+<tr><td><code>321</code></td><td>Release from quality inspection to unrestricted-use stock</td></tr>
+<tr><td><code>551</code></td><td>Withdrawal for scrapping</td></tr>
+</tbody></table></div>
+<p>A movement is reversed with the matching reversal type, usually the next number: <code>102</code> reverses <code>101</code>, <code>262</code> reverses <code>261</code>.</p>
+
+<h2>Stock types</h2>
+<p>In a storage location, the same material can be in three stock types:</p>
+<ul>
+<li><strong>Unrestricted-use</strong>: free to be consumed or shipped.</li>
+<li><strong>Quality inspection</strong>: waiting for a quality decision.</li>
+<li><strong>Blocked</strong>: not to be used.</li>
+</ul>
+
+<h2>Documents and value</h2>
+<p>Each goods movement creates a <strong>material document</strong>. Stock has a value, so a valued movement also creates an <strong>accounting document</strong>: logistics and finance move together. In S/4HANA, stock quantities are calculated from the material documents themselves, which are stored in one table.</p>
+
+<h2>Daily transactions</h2>
+<ul>
+<li><code>MIGO</code>: post and display most goods movements.</li>
+<li><code>MMBE</code>: stock overview of a material by plant, storage location and stock type.</li>
+<li>Physical inventory: stock is counted and the differences are posted, so that SAP matches the shelves.</li>
+</ul>
+
+    <aside class="example"><h2>On the shop floor</h2><p>The storekeeper moves 50 housings from the main store (0001) to the line-side rack (0003): movement type 311. Two housings are found dented: movement type 551, scrapping. If the line-side rack is not a separate storage location in SAP, the supervision may show a full rack while SAP shows nothing there: agreeing on storage locations early saves a lot of confusion.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>The movement type says what happens: 101 receipt, 261 issue to order, 311 transfer, 551 scrap.</li><li>Mistakes are reversed, never deleted (102 for 101, 262 for 261).</li><li>Unrestricted-use, quality inspection, blocked: only the first is free to use.</li><li>MIGO posts movements, MMBE shows stock; each movement leaves a material document.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="51,54,55" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-5/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-7/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La gestion de la qualité · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Lots de contrôle, résultats et décisions d&#x27;emploi : comment SAP QM vérifie ce qui entre, ce qui est fabriqué et ce qui part en stock.">
+<meta property="og:title" content="La gestion de la qualité · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Lots de contrôle, résultats et décisions d&#x27;emploi : comment SAP QM vérifie ce qui entre, ce qui est fabriqué et ce qui part en stock.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-7/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-7/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-7/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-7/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-7/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 7 sur 10</p>
+  <h1>La gestion de la qualité</h1>
+  <p class="lead">Lots de contrôle, résultats et décisions d&#x27;emploi : comment SAP QM vérifie ce qui entre, ce qui est fabriqué et ce qui part en stock.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Savoir ce qui crée un lot de contrôle.</li><li>Suivre un contrôle depuis les résultats jusqu&#x27;à la décision d&#x27;emploi.</li><li>Savoir où se placent les mesures de l&#x27;atelier.</li></ul></div>
+    
+<h2>Le lot de contrôle</h2>
+<p>Un <strong>lot de contrôle</strong> (inspection lot) est une demande de contrôle d'une quantité d'article. SAP le crée automatiquement quand un événement se produit, et son <strong>origine</strong> indique lequel :</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Origine</th><th scope="col">Créé par</th></tr></thead>
+<tbody>
+<tr><td><code>01</code></td><td>Entrée de marchandises sur commande d'achat : contrôle à réception</td></tr>
+<tr><td><code>03</code></td><td>Lancement d'un ordre de fabrication : contrôle en cours de fabrication, au fil des opérations</td></tr>
+<tr><td><code>04</code></td><td>Entrée de marchandises depuis la production : contrôle final ; les produits attendent en général en stock de contrôle qualité</td></tr>
+</tbody></table></div>
+
+<h2>Que contrôler</h2>
+<p>Le plan de contrôle (ou la gamme, pour le contrôle en cours de fabrication) liste les <strong>caractéristiques</strong> à vérifier : un diamètre, une pression, un aspect visuel. Les caractéristiques utilisées dans de nombreux plans sont définies une fois comme <strong>caractéristiques de contrôle de référence</strong>. Une procédure d'échantillonnage indique combien de pièces contrôler.</p>
+
+<h2>Des résultats à la décision</h2>
+<ol class="steps">
+<li><strong>Saisie des résultats</strong> (<code>QE51N</code>) : valeurs mesurées ou conforme / non conforme pour chaque caractéristique.</li>
+<li><strong>Décision d'emploi</strong> (depuis la liste de travail <code>QA32</code>) : le lot est accepté ou refusé. La décision peut transférer le stock en libre utilisation, en bloqué ou au rebut.</li>
+</ol>
+
+<h2>Quand quelque chose ne va pas</h2>
+<p>Les problèmes sont enregistrés dans des <strong>avis qualité</strong>. Dans le standard SAP, Q1 est une réclamation client, Q2 une réclamation contre un fournisseur et Q3 un problème interne. L'avis rassemble les défauts, les causes et les actions.</p>
+
+<h2>Les mesures de l'atelier</h2>
+<p>Les bancs de test et les machines mesurent déjà. Leurs valeurs peuvent arriver dans SAP par le MES ou par une interface qui enregistre les résultats dans le lot de contrôle. Elles ne doivent jamais être écrites directement dans la base de données de SAP.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Les pompes sortent du banc de test avec un débit et une pression mesurés. Le MES regroupe les valeurs par ordre et les enregistre dans le lot de contrôle d&#x27;origine 04. Le technicien qualité ne regarde que les lots hors tolérance, puis prend la décision d&#x27;emploi : les pompes bonnes passent en libre utilisation avec le type de mouvement 321, comptabilisé automatiquement.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Origine 01 : livraisons fournisseurs. 03 : pendant la fabrication. 04 : entrée depuis la production.</li><li>Les caractéristiques disent quoi contrôler ; les caractéristiques de référence se réutilisent d&#x27;un plan à l&#x27;autre.</li><li>Saisie des résultats, puis décision d&#x27;emploi, qui déplace le stock.</li><li>Q1, Q2, Q3 : problèmes client, fournisseur et interne.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="60,63,65" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-6/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-8/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

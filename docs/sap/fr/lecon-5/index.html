@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L&#x27;ordre de fabrication · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="La vie d&#x27;un ordre de fabrication de sa création à sa clôture, ses statuts, et les mouvements de stock et confirmations que l&#x27;atelier alimente.">
+<meta property="og:title" content="L&#x27;ordre de fabrication · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="La vie d&#x27;un ordre de fabrication de sa création à sa clôture, ses statuts, et les mouvements de stock et confirmations que l&#x27;atelier alimente.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-5/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-5/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-5/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-5/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-5/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 5 sur 10</p>
+  <h1>L&#x27;ordre de fabrication</h1>
+  <p class="lead">La vie d&#x27;un ordre de fabrication de sa création à sa clôture, ses statuts, et les mouvements de stock et confirmations que l&#x27;atelier alimente.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Suivre un ordre de fabrication à travers ses statuts.</li><li>Savoir quand les composants sortent et quand les produits finis entrent en stock.</li><li>Comprendre ce que rapporte une confirmation.</li></ul></div>
+    
+<h2>Création et lancement</h2>
+<p>Un ordre de fabrication est créé en convertissant un ordre planifié, ou à la main (<code>CO01</code>). SAP copie les <strong>opérations</strong> de la gamme et les <strong>composants</strong> de la nomenclature, via la version de fabrication, et réserve les composants. Un contrôle de disponibilité indique si les pièces sont là.</p>
+<p>Le <strong>lancement</strong> (release) est le moment où l'ordre peut être exécuté : on peut imprimer les documents d'atelier, envoyer l'ordre au MES, et SAP accepte les mouvements de stock et les confirmations.</p>
+
+<h2>Les statuts</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Statut</th><th scope="col">Signification</th></tr></thead>
+<tbody>
+<tr><td><code>CRTD</code></td><td>Créé : planifié, pas encore exécutable</td></tr>
+<tr><td><code>REL</code></td><td>Lancé : peut être exécuté</td></tr>
+<tr><td><code>PCNF</code> / <code>CNF</code></td><td>Partiellement confirmé / confirmé</td></tr>
+<tr><td><code>PDLV</code> / <code>DLV</code></td><td>Partiellement livré / livré en stock</td></tr>
+<tr><td><code>TECO</code></td><td>Techniquement terminé : plus aucune production attendue</td></tr>
+<tr><td><code>CLSD</code></td><td>Clôturé : coûts imputés, plus rien ne peut être saisi</td></tr>
+</tbody></table></div>
+
+<h2>Sortie, confirmation, entrée</h2>
+<ol class="steps">
+<li><strong>Sortie de marchandises</strong> (type de mouvement 261) : les composants quittent le stock et sont imputés à l'ordre. Avec le <strong>prélèvement rétroactif</strong> (backflush), cela se fait automatiquement à la confirmation de l'opération.</li>
+<li><strong>Confirmation</strong> (<code>CO11N</code>) : pour chaque opération, la quantité bonne (yield), le rebut, les retouches et les temps réellement passés. Une confirmation peut être partielle ou finale. <code>CO13</code> en annule une.</li>
+<li><strong>Entrée de marchandises</strong> (type de mouvement 101) : les produits finis entrent en stock. Elle peut être comptabilisée automatiquement avec la confirmation de la dernière opération.</li>
+<li><strong>Clôture</strong> : l'ordre passe en TECO, puis ses coûts sont imputés au contrôle de gestion, qui montre l'écart entre coût prévu et coût réel.</li>
+</ol>
+<p>Pour suivre beaucoup d'ordres à la fois, <code>COOIS</code> liste les ordres, les opérations et les composants avec leurs statuts.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Un compteur sur la ligne de montage compte 82 pompes pour l&#x27;ordre 1000123, et le banc de test en refuse 2. En fin d&#x27;équipe, le MES envoie la confirmation de l&#x27;opération 20 : quantité bonne 80, rebut 2, temps machine 7,5 heures. SAP prélève rétroactivement les vis et les moteurs, et comptabilise automatiquement l&#x27;entrée de 80 pompes. Personne n&#x27;a rien tapé dans SAP.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Les opérations viennent de la gamme, les composants de la nomenclature.</li><li>Le lancement ouvre l&#x27;ordre aux confirmations et aux mouvements de stock.</li><li>261 sort les composants, 101 fait entrer les produits finis ; le prélèvement rétroactif automatise la sortie.</li><li>Une confirmation rapporte quantité bonne, rebut et temps ; TECO termine la production, l&#x27;imputation clôt les coûts.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="40,44,46" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-4/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-6/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

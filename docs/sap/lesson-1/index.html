@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAP in the factory · SAP from the shop floor</title>
+<meta name="description" content="What an ERP is, where SAP S/4HANA sits among the systems of a factory, and how SAP describes a company.">
+<meta property="og:title" content="SAP in the factory · SAP from the shop floor">
+<meta property="og:description" content="What an ERP is, where SAP S/4HANA sits among the systems of a factory, and how SAP describes a company.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-1/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-1/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-1/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-1/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-1/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 1 of 10</p>
+  <h1>SAP in the factory</h1>
+  <p class="lead">What an ERP is, where SAP S/4HANA sits among the systems of a factory, and how SAP describes a company.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Place SAP among the levels of a factory.</li><li>Know what SAP does, and what it does not do.</li><li>Recognise the main organisational units: client, company code, plant, storage location.</li></ul></div>
+    
+<h2>An ERP, in one sentence</h2>
+<p>An ERP (enterprise resource planning) keeps the whole company in one database: sales, purchasing, production, stock, maintenance, quality and accounting. When the store issues a part, the stock changes, the order's cost changes and the accounts change, all at once. SAP S/4HANA is SAP's current ERP. It follows SAP ECC, the previous generation, and runs only on SAP HANA, SAP's in-memory database. It can be installed on the company's own servers or used as a cloud service.</p>
+
+<h2>Where SAP sits</h2>
+<p>Factories are often described in levels, from the sensors at the bottom to the business systems at the top: this is the ISA-95 model. SAP lives at the top level.</p>
+<figure class="diagram"><svg viewBox="0 0 660 320" role="img" aria-label="The five levels of a factory, from sensors to ERP, with their time scales"><rect class="hot" x="1" y="1" width="480" height="52" rx="4"/><text class="t" x="16" y="25">Level 4 · ERP (SAP S/4HANA)</text><text class="lab" x="16" y="44">Orders, materials, stock, costs</text><text class="lab" x="500" y="32">days, hours</text><rect class="box" x="1" y="67" width="480" height="52" rx="4"/><text class="t" x="16" y="91">Level 3 · MES</text><text class="lab" x="16" y="110">Execution, tracking, quality on the floor</text><text class="lab" x="500" y="98">minutes</text><rect class="box" x="1" y="133" width="480" height="52" rx="4"/><text class="t" x="16" y="157">Level 2 · SCADA and HMI</text><text class="lab" x="16" y="176">Supervision of lines and machines</text><text class="lab" x="500" y="164">seconds</text><rect class="box" x="1" y="199" width="480" height="52" rx="4"/><text class="t" x="16" y="223">Level 1 · PLCs</text><text class="lab" x="16" y="242">Control of the process</text><text class="lab" x="500" y="230">milliseconds</text><rect class="box" x="1" y="265" width="480" height="52" rx="4"/><text class="t" x="16" y="289">Level 0 · Sensors and actuators</text><text class="lab" x="16" y="308">The physical process</text><text class="lab" x="500" y="296">real time</text></svg><figcaption>The higher the level, the slower the rhythm: SAP plans in days and hours, a PLC reacts in milliseconds.</figcaption></figure>
+<p>SAP knows what must be made, from which parts, by when, and what it costs. It does not drive machines: it does not read a sensor every 10 ms, and it should never write to a PLC. Between SAP and the machines there is usually an MES (level 3) or at least a gateway.</p>
+
+<h2>How SAP describes a company</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Unit</th><th scope="col">What it is</th><th scope="col">Example</th></tr></thead>
+<tbody>
+<tr><td>Client</td><td>A self-contained environment in the SAP system, with its own data.</td><td>Client 100: production</td></tr>
+<tr><td>Company code</td><td>A legal entity with its own accounts.</td><td>The Belgian company</td></tr>
+<tr><td>Plant</td><td>A factory or site: the unit for production, planning and stock.</td><td>Plant 1100</td></tr>
+<tr><td>Storage location</td><td>A place where stock is kept inside a plant.</td><td>0001 raw materials, 0002 finished goods</td></tr>
+</tbody></table></div>
+
+<h2>The modules you will hear about</h2>
+<p>SAP is still described by its historical modules: <strong>PP</strong> (production planning), <strong>MM</strong> (materials management: purchasing and stock), <strong>QM</strong> (quality management), <strong>PM</strong> (plant maintenance), <strong>SD</strong> (sales and distribution) and <strong>FI/CO</strong> (finance and controlling). In S/4HANA they are one system sharing the same data, but the abbreviations are everywhere.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>A plant with two lines making pumps is plant 1100 in SAP. Raw materials sit in storage location 0001, the line-side racks in 0003, finished pumps in 0002. The PLCs and the supervision do not know any of these numbers: the MES, or the people, make the link.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>SAP S/4HANA is an ERP: level 4, hours and days, not milliseconds.</li><li>It never drives machines; an MES or a gateway sits in between.</li><li>Client, company code, plant and storage location describe the company.</li><li>PP, MM, QM, PM, SD and FI/CO are the module names still in daily use.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="0,1,6" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <span></span>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-2/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

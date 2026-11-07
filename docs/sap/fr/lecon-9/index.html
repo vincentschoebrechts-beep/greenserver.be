@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lots et traçabilité · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Lots, numéros de série et utilisations : comment SAP répond à la question par laquelle commence chaque rappel de produits.">
+<meta property="og:title" content="Lots et traçabilité · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Lots, numéros de série et utilisations : comment SAP répond à la question par laquelle commence chaque rappel de produits.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-9/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-9/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-9/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-9/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-9/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 9 sur 10</p>
+  <h1>Lots et traçabilité</h1>
+  <p class="lead">Lots, numéros de série et utilisations : comment SAP répond à la question par laquelle commence chaque rappel de produits.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Savoir ce qu&#x27;apporte la gestion par lots.</li><li>Distinguer traçabilité ascendante et descendante.</li><li>Comprendre pourquoi l&#x27;atelier fait ou défait la traçabilité.</li></ul></div>
+    
+<h2>Les lots</h2>
+<p>Un <strong>lot</strong> (batch) est une quantité d'article fabriquée ou reçue dans les mêmes conditions et suivie sous un même numéro. La gestion par lots s'active <strong>par article</strong> : seuls les articles qui ont besoin de traçabilité en ont.</p>
+<p>Les lots sont décrits par des <strong>caractéristiques</strong> dans leur classification : viscosité, couleur, lot fournisseur, et les dates qui comptent, comme la date de fabrication et la <strong>date limite de conservation</strong> (SLED), que SAP peut calculer à partir de la durée de conservation de l'article.</p>
+
+<h2>Choisir les lots</h2>
+<p>À la sortie de stock, la <strong>détermination des lots</strong> propose les lots à prendre, selon une stratégie : FIFO (premier entré, premier sorti) ou FEFO (premier périmé, premier sorti), et des valeurs de caractéristiques qui doivent correspondre.</p>
+
+<h2>La traçabilité</h2>
+<ul>
+<li><strong>Ascendante</strong> : d'un lot de produit vers les lots de composants, et de là vers les fournisseurs.</li>
+<li><strong>Descendante</strong> : d'un lot de composant vers tous les lots de produits qui l'ont utilisé, et vers tous les clients qui les ont reçus. C'est ce dont un rappel a besoin.</li>
+</ul>
+<p>La liste des utilisations des lots et le <strong>cockpit d'information sur les lots</strong> (<code>BMBC</code>) montrent ces liens.</p>
+
+<h2>Les numéros de série</h2>
+<p>Un lot suit un groupe d'unités. Quand chaque unité doit être suivie individuellement, comme chaque pompe avec son propre relevé de test, SAP utilise des <strong>numéros de série</strong>. Lots et numéros de série peuvent être utilisés ensemble.</p>
+
+<h2>Le maillon faible est en atelier</h2>
+<p>SAP ne connaît que les lots qui ont été saisis. Si la ligne consomme le lot B alors que SAP enregistre le lot A, la traçabilité est fausse, et personne ne s'en apercevra avant le jour où on en aura besoin. Scanner les étiquettes de lot en ligne, et laisser le MES saisir les sorties de stock par lot, c'est ce qui rend la traçabilité fiable.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Un fournisseur prévient qu&#x27;un lot de joints est défectueux. La traçabilité descendante depuis ce lot de joints liste les trois lots de pompes qui l&#x27;ont utilisé, et les livraisons qui les ont expédiés. Comme la ligne scanne chaque boîte de joints, la réponse prend quelques minutes et ne concerne que les pompes réellement touchées.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>La gestion par lots s&#x27;active par article ; les lots sont décrits par des caractéristiques.</li><li>FIFO prend le lot le plus ancien, FEFO celui qui périme le premier.</li><li>Ascendante : ce qui est entré dedans. Descendante : où il est allé.</li><li>La traçabilité ne vaut que ce que valent les lots scannés et saisis en ligne.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="80,85,89" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-8/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-10/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

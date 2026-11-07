@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stocks et mouvements · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Comment SAP enregistre chaque changement de stock : types de mouvement, types de stock, documents, et les transactions que le magasin utilise tous les jours.">
+<meta property="og:title" content="Stocks et mouvements · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Comment SAP enregistre chaque changement de stock : types de mouvement, types de stock, documents, et les transactions que le magasin utilise tous les jours.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-6/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-6/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-6/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-6/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-6/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 6 sur 10</p>
+  <h1>Stocks et mouvements</h1>
+  <p class="lead">Comment SAP enregistre chaque changement de stock : types de mouvement, types de stock, documents, et les transactions que le magasin utilise tous les jours.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Connaître les types de mouvement les plus courants.</li><li>Comprendre les trois types de stock.</li><li>Trouver le stock d&#x27;un article et ses mouvements.</li></ul></div>
+    
+<h2>Les types de mouvement</h2>
+<p>Chaque changement de stock est un <strong>mouvement de stock</strong>, et chaque mouvement a un <strong>type de mouvement</strong> à trois chiffres qui indique à SAP ce qui se passe et comment le comptabiliser.</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Type</th><th scope="col">Mouvement</th></tr></thead>
+<tbody>
+<tr><td><code>101</code></td><td>Entrée de marchandises sur commande d'achat ou ordre de fabrication</td></tr>
+<tr><td><code>261</code></td><td>Sortie de marchandises vers un ordre</td></tr>
+<tr><td><code>201</code></td><td>Sortie vers un centre de coûts (consommation sans ordre)</td></tr>
+<tr><td><code>311</code></td><td>Transfert entre magasins, en une étape</td></tr>
+<tr><td><code>321</code></td><td>Libération du contrôle qualité vers la libre utilisation</td></tr>
+<tr><td><code>551</code></td><td>Sortie pour mise au rebut</td></tr>
+</tbody></table></div>
+<p>Un mouvement s'annule avec le type d'annulation correspondant, en général le numéro suivant : <code>102</code> annule <code>101</code>, <code>262</code> annule <code>261</code>.</p>
+
+<h2>Les types de stock</h2>
+<p>Dans un magasin, un même article peut se trouver dans trois types de stock :</p>
+<ul>
+<li><strong>Libre utilisation</strong> : peut être consommé ou expédié librement.</li>
+<li><strong>Contrôle qualité</strong> : attend une décision de la qualité.</li>
+<li><strong>Bloqué</strong> : ne doit pas être utilisé.</li>
+</ul>
+
+<h2>Documents et valeur</h2>
+<p>Chaque mouvement de stock crée un <strong>document article</strong>. Le stock a une valeur : un mouvement valorisé crée donc aussi un <strong>document comptable</strong>, et logistique et finance avancent ensemble. Dans S/4HANA, les quantités en stock sont calculées à partir des documents articles eux-mêmes, rangés dans une seule table.</p>
+
+<h2>Les transactions de tous les jours</h2>
+<ul>
+<li><code>MIGO</code> : saisir et afficher la plupart des mouvements de stock.</li>
+<li><code>MMBE</code> : vue du stock d'un article par division, magasin et type de stock.</li>
+<li>L'inventaire : on compte le stock et on comptabilise les écarts, pour que SAP corresponde aux étagères.</li>
+</ul>
+
+    <aside class="example"><h2>En atelier</h2><p>Le magasinier déplace 50 corps de pompe du magasin principal (0001) vers le rack en bord de ligne (0003) : type de mouvement 311. Deux corps sont cabossés : type de mouvement 551, mise au rebut. Si le rack en bord de ligne n&#x27;est pas un magasin à part dans SAP, la supervision peut montrer un rack plein alors que SAP n&#x27;y voit rien : se mettre d&#x27;accord tôt sur les magasins évite beaucoup de confusion.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Le type de mouvement dit ce qui se passe : 101 entrée, 261 sortie vers un ordre, 311 transfert, 551 rebut.</li><li>Les erreurs s&#x27;annulent, elles ne se suppriment pas (102 pour 101, 262 pour 261).</li><li>Libre utilisation, contrôle qualité, bloqué : seul le premier est utilisable librement.</li><li>MIGO saisit les mouvements, MMBE montre le stock ; chaque mouvement laisse un document article.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="51,54,55" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-5/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-7/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

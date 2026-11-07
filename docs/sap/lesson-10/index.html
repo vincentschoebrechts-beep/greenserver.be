@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connecting and securing the shop floor · SAP from the shop floor</title>
+<meta name="description" content="How data really travels between SAP and the machines, which channels exist, and how to keep that link from becoming a way into the plant.">
+<meta property="og:title" content="Connecting and securing the shop floor · SAP from the shop floor">
+<meta property="og:description" content="How data really travels between SAP and the machines, which channels exist, and how to keep that link from becoming a way into the plant.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-10/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-10/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-10/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-10/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-10/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 10 of 10</p>
+  <h1>Connecting and securing the shop floor</h1>
+  <p class="lead">How data really travels between SAP and the machines, which channels exist, and how to keep that link from becoming a way into the plant.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Know the channels between SAP and the plant.</li><li>Follow a counter on the line all the way to a confirmation in SAP.</li><li>Apply basic security rules to the SAP link.</li></ul></div>
+    
+<h2>Translating between two worlds</h2>
+<p>A PLC knows tags, counters and events. SAP knows orders, confirmations and goods movements. Something in between translates: an <strong>MES</strong>, a gateway or a piece of middleware.</p>
+<figure class="diagram"><svg viewBox="0 0 700 130" role="img" aria-label="Data flow between the PLC, the MES and SAP"><defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs><rect class="box" x="1" y="30" width="190" height="70" rx="4"/><text class="t" x="96" y="60" text-anchor="middle">PLC and SCADA</text><text class="lab" x="96" y="82" text-anchor="middle">tags, counters, events</text><rect class="box" x="255" y="30" width="190" height="70" rx="4"/><text class="t" x="350" y="60" text-anchor="middle">MES or gateway</text><text class="lab" x="350" y="82" text-anchor="middle">translates</text><rect class="hot" x="509" y="30" width="190" height="70" rx="4"/><text class="t" x="604" y="60" text-anchor="middle">SAP S/4HANA</text><text class="lab" x="604" y="82" text-anchor="middle">orders, confirmations</text><g style="color:var(--muted)" stroke="currentColor" stroke-width="2" fill="none"><line x1="193" y1="65" x2="253" y2="65" marker-start="url(#fl)" marker-end="url(#fl)"/><line x1="447" y1="65" x2="507" y2="65" marker-start="url(#fl)" marker-end="url(#fl)"/></g><text class="lab" x="223" y="122" text-anchor="middle">OPC UA</text><text class="lab" x="477" y="122" text-anchor="middle">IDoc · RFC · OData</text></svg><figcaption>SAP sends orders down to the MES; the MES sends confirmations and goods movements up. SAP never talks to the PLC.</figcaption></figure>
+
+<h2>The channels</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Channel</th><th scope="col">In a few words</th></tr></thead>
+<tbody>
+<tr><td>IDoc</td><td>SAP's format for asynchronous messages: sent, queued, processed later. <code>LOIPRO</code> is commonly used to send production orders to an MES.</td></tr>
+<tr><td>BAPI over RFC</td><td>Functions in SAP that external programs call and that answer straight away, for example to post a confirmation.</td></tr>
+<tr><td>OData APIs</td><td>Web services over HTTPS, documented on the SAP Business Accelerator Hub, such as the Production Order API and the Production Order Confirmation API.</td></tr>
+<tr><td>SAP connectors</td><td>SAP Plant Connectivity (PCo) runs as a Windows service in the plant network and reads OPC UA servers, among others. With SAP Digital Manufacturing, SAP's cloud MES, the Production Connector plays that role.</td></tr>
+</tbody></table></div>
+
+<h2>From the counter to the confirmation</h2>
+<ol class="steps">
+<li>SAP releases the order and sends it to the MES (for example as a <code>LOIPRO</code> IDoc).</li>
+<li>The PLC counts good and rejected parts; the MES reads the counters over OPC UA.</li>
+<li>At the end of the operation, the MES posts a confirmation with yield and scrap (BAPI or OData).</li>
+<li>SAP backflushes the components and posts the goods receipt.</li>
+<li>Failed messages are watched: <code>BD87</code> shows IDocs by status and reprocesses them once the cause is fixed.</li>
+</ol>
+
+<h2>Securing the link</h2>
+<ul>
+<li><strong>Zones and conduits.</strong> In IEC 62443 terms, the office network and the plant network are separate zones, and the SAP link is a conduit between them: it passes through a DMZ, it is filtered, and it is documented.</li>
+<li><strong>SAP never talks to the PLCs.</strong> It talks to the MES or the gateway; only those talk to the controllers.</li>
+<li><strong>One technical user per interface.</strong> Use a system or communication user, which cannot log on interactively, with only the rights the interface needs.</li>
+<li><strong>Encrypt.</strong> SNC for RFC, HTTPS for OData.</li>
+<li><strong>Watch.</strong> Failed IDocs and rejected calls are often the first sign of trouble, on either side.</li>
+</ul>
+
+    <aside class="example"><h2>On the shop floor</h2><p>A plant connects its assembly lines to S/4HANA. The MES runs in the plant network and reads the PLCs over OPC UA. It exchanges data with SAP only through a server in the DMZ, with a dedicated communication user and SNC encryption. When the network team sees a new flow from the office network straight to a PLC, they know it is not the SAP link: that one never goes there.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>An MES or gateway translates machine signals into business events.</li><li>IDoc: asynchronous. BAPI/RFC: immediate. OData: HTTPS APIs. PCo and the Production Connector read OPC UA.</li><li>Counter, MES, confirmation, backflush, goods receipt: no typing needed.</li><li>Zones and conduits, a DMZ, dedicated technical users, encryption and monitoring.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="90,91,97" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-9/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/quiz/">Final quiz →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

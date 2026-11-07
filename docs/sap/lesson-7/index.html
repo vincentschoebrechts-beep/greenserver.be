@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quality management · SAP from the shop floor</title>
+<meta name="description" content="Inspection lots, results and usage decisions: how SAP QM checks what comes in, what is made and what goes to stock.">
+<meta property="og:title" content="Quality management · SAP from the shop floor">
+<meta property="og:description" content="Inspection lots, results and usage decisions: how SAP QM checks what comes in, what is made and what goes to stock.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/lesson-7/">
+<link rel="canonical" href="https://greenserver.be/sap/lesson-7/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-7/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-7/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../../#tools">Tools</a>
+      <a href="../../sap/fr/lecon-7/" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../sap/">SAP from the shop floor</a> · Lesson 7 of 10</p>
+  <h1>Quality management</h1>
+  <p class="lead">Inspection lots, results and usage decisions: how SAP QM checks what comes in, what is made and what goes to stock.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>In this lesson</strong></p><ul><li>Know what creates an inspection lot.</li><li>Follow an inspection from results to usage decision.</li><li>Know where shop-floor measurements fit in.</li></ul></div>
+    
+<h2>The inspection lot</h2>
+<p>An <strong>inspection lot</strong> is a request to inspect a quantity of material. SAP creates it automatically when an event happens, and its <strong>origin</strong> says which event:</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Origin</th><th scope="col">Created by</th></tr></thead>
+<tbody>
+<tr><td><code>01</code></td><td>Goods receipt for a purchase order: incoming inspection</td></tr>
+<tr><td><code>03</code></td><td>Release of a production order: in-process inspection along the operations</td></tr>
+<tr><td><code>04</code></td><td>Goods receipt from production: final inspection; the goods usually wait in quality inspection stock</td></tr>
+</tbody></table></div>
+
+<h2>What to inspect</h2>
+<p>The inspection plan (or the routing, for in-process inspection) lists the <strong>characteristics</strong> to check: a diameter, a pressure, a visual aspect. Characteristics used in many plans are defined once as <strong>master inspection characteristics</strong>. A sampling procedure says how many parts to check.</p>
+
+<h2>From results to decision</h2>
+<ol class="steps">
+<li><strong>Results recording</strong> (<code>QE51N</code>): measured values or pass/fail for each characteristic.</li>
+<li><strong>Usage decision</strong> (from the <code>QA32</code> worklist): the lot is accepted or rejected. The decision can post the stock to unrestricted-use, blocked or scrap.</li>
+</ol>
+
+<h2>When something goes wrong</h2>
+<p>Problems are recorded as <strong>quality notifications</strong>. In the SAP standard, Q1 is a customer complaint, Q2 a complaint against a supplier and Q3 an internal problem. The notification collects the defects, the causes and the actions.</p>
+
+<h2>Measurements from the floor</h2>
+<p>Test benches and machines already measure. Their values can reach SAP through the MES or an interface that records results against the inspection lot. They should never be written straight into SAP's database.</p>
+
+    <aside class="example"><h2>On the shop floor</h2><p>Pumps leave the test bench with a measured flow rate and pressure. The MES gathers the values per order and records them against the origin 04 inspection lot. The quality technician only looks at the lots out of tolerance, then makes the usage decision: the good pumps go to unrestricted-use stock with movement type 321, posted automatically.</p></aside>
+    <h2>Key points</h2>
+    <ul class="keys"><li>Origin 01: supplier deliveries. 03: during production. 04: goods receipt from production.</li><li>Characteristics say what to check; master inspection characteristics are reused across plans.</li><li>Results recording, then usage decision, which moves the stock.</li><li>Q1, Q2, Q3: customer, supplier and internal problems.</li></ul>
+    <h2 id="check">Check yourself</h2>
+    <p>Three questions on this lesson. Pick an answer to see if it is right.</p>
+    <div class="qcheck" data-ids="60,63,65" data-lang="en"></div>
+    <nav class="lesson-nav" aria-label="Course contents">
+      <a class="btn ghost" href="../../sap/lesson-6/">← Previous</a>
+      <a href="../../sap/">Course contents</a>
+      <a class="btn" href="../../sap/lesson-8/">Next →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../../assets/sap-questions.js"></script>
+<script src="../../assets/sap-course.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passer de son ERP à SAP S/4HANA · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Annexe facultative : pourquoi les entreprises passent à S/4HANA maintenant, les trois façons d&#x27;y aller, le déroulement d&#x27;un tel projet et ce que l&#x27;informatique industrielle doit préparer côté atelier.">
+<meta property="og:title" content="Passer de son ERP à SAP S/4HANA · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Annexe facultative : pourquoi les entreprises passent à S/4HANA maintenant, les trois façons d&#x27;y aller, le déroulement d&#x27;un tel projet et ce que l&#x27;informatique industrielle doit préparer côté atelier.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/annexe/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/annexe/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/annexe/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/annex/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/annex/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Annexe</p>
+  <h1>Passer de son ERP à SAP S/4HANA</h1>
+  <p class="lead">Annexe facultative : pourquoi les entreprises passent à S/4HANA maintenant, les trois façons d&#x27;y aller, le déroulement d&#x27;un tel projet et ce que l&#x27;informatique industrielle doit préparer côté atelier.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Savoir pourquoi tant d&#x27;entreprises passent à S/4HANA maintenant.</li><li>Distinguer nouvelle implémentation, conversion de système et transition sélective des données.</li><li>Préparer le côté atelier du projet : interfaces, identifiants, bascule.</li></ul></div>
+    
+<h2>Pourquoi maintenant</h2>
+<ul>
+<li><strong>La fin de SAP ECC.</strong> La maintenance standard de SAP ECC se termine fin 2027. Une maintenance étendue optionnelle, plus chère, court jusqu'à fin 2030. Les investissements de SAP vont à S/4HANA, que SAP s'est engagé à faire évoluer au moins jusqu'en 2040.</li>
+<li><strong>Un seul système pour le groupe.</strong> Les groupes remplacent souvent les ERP locaux, SAP ou non, par un modèle S/4HANA unique, pour que tous les sites travaillent et rapportent de la même façon.</li>
+</ul>
+
+<h2>Trois façons d'y aller</h2>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Approche</th><th scope="col">Ce que ça veut dire</th><th scope="col">Cas typique</th></tr></thead>
+<tbody>
+<tr><td>Nouvelle implémentation (greenfield)</td><td>Un nouveau système S/4HANA construit sur les processus standard ; seule une sélection de données est migrée.</td><td>La seule voie depuis un ERP qui n'est pas SAP ; choisie aussi pour repartir propre.</td></tr>
+<tr><td>Conversion de système (brownfield)</td><td>Un système SAP ECC existant est converti en S/4HANA, avec ses données et ses réglages.</td><td>Un système ECC en bonne santé, quand l'historique doit être gardé.</td></tr>
+<tr><td>Transition sélective des données</td><td>Un nouveau système vide, dans lequel on reprend les données, sociétés ou périodes choisies.</td><td>Groupes qui fusionnent des systèmes ou séparent une activité.</td></tr>
+</tbody></table></div>
+
+<h2>Le modèle du groupe</h2>
+<p>Dans un groupe, une équipe centrale conçoit en général un <strong>modèle global</strong> (template) : processus, réglages et règles de données de base communs à tous les sites, puis déployés site après site. Chaque site adapte ses habitudes au standard plutôt que l'inverse : c'est le <strong>fit-to-standard</strong>. SAP parle aussi de <strong>clean core</strong> : garder le système SAP aussi standard que possible et placer à côté les développements propres à l'entreprise, pour que les mises à jour futures restent simples.</p>
+
+<h2>Le déroulement du projet</h2>
+<p>La plupart des projets suivent <strong>SAP Activate</strong>, la méthode de SAP, en six phases :</p>
+<div class="table-scroll"><table>
+<thead><tr><th scope="col">Phase</th><th scope="col">Ce qui se passe</th></tr></thead>
+<tbody>
+<tr><td>Discover</td><td>Comprendre ce qu'apporte S/4HANA et bâtir le dossier de décision.</td></tr>
+<tr><td>Prepare</td><td>Mettre en place l'équipe, le planning, les systèmes et la gouvernance.</td></tr>
+<tr><td>Explore</td><td>Ateliers fit-to-standard : les utilisateurs clés découvrent les processus standard dans un bac à sable et listent les vrais écarts.</td></tr>
+<tr><td>Realize</td><td>Paramétrer, construire les interfaces et les extensions, faire des chargements de données de test, tout tester ensemble.</td></tr>
+<tr><td>Deploy</td><td>Former les utilisateurs, répéter puis réaliser la bascule, démarrer.</td></tr>
+<tr><td>Run</td><td>Hypercare juste après le démarrage, puis support normal et améliorations.</td></tr>
+</tbody></table></div>
+
+<h2>La migration des données</h2>
+<ol class="steps">
+<li><strong>Nettoyer</strong> les anciennes données : doublons, articles obsolètes, fournisseurs que plus personne n'utilise.</li>
+<li><strong>Faire la correspondance</strong> entre anciens et nouveaux codes : numéros d'article, postes de travail, magasins, unités de mesure.</li>
+<li><strong>Charger</strong> avec les outils du projet, souvent le SAP S/4HANA Migration Cockpit, qui fonctionne avec un modèle par type de données.</li>
+<li><strong>Contrôler et valider</strong> : les responsables métier confirment que les données chargées sont justes. Plusieurs chargements de test précèdent le vrai.</li>
+</ol>
+<p>À la bascule, les éléments en cours suivent aussi : ordres ouverts, commandes d'achat ouvertes, et le stock, en général compté juste avant.</p>
+
+<h2>Liste de contrôle pour l'informatique industrielle</h2>
+<ul class="checklist">
+<li><strong>Lister tous les flux</strong> entre l'ancien ERP et l'usine : ordres envoyés au MES, confirmations, impression d'étiquettes, scanners, balances, résultats qualité, compteurs de maintenance. Pour chacun : sens, protocole, fréquence, responsable.</li>
+<li><strong>Vérifier les identifiants et la longueur des champs.</strong> Les numéros d'ordre de fabrication ont 12 caractères dans SAP ; les numéros d'article peuvent en avoir jusqu'à 40 dans S/4HANA. Les tables du MES, les champs des IHM, les chaînes des automates et les codes-barres taillés pour l'ancien ERP peuvent les tronquer.</li>
+<li><strong>Se mettre d'accord sur les magasins et les postes de travail</strong> avec le projet, pour que ce que voit l'atelier corresponde à ce que sait SAP.</li>
+<li><strong>Reconstruire les interfaces</strong> avec les canaux de SAP (IDoc, BAPI, OData) et les tester de bout en bout dans le système de test, avec les vrais scanners et imprimantes.</li>
+<li><strong>Sécuriser les nouveaux conduits</strong> : règles de pare-feu, utilisateurs techniques, chiffrement, documentation (leçon 10).</li>
+<li><strong>Planifier la bascule avec la production</strong> : production réduite ou arrêt, inventaire, gel des données de base, et un plan de repli si le démarrage est reporté.</li>
+<li><strong>Préparer l'hypercare</strong> : qui appeler, comment les erreurs d'interface sont surveillées, en combien de temps elles sont corrigées.</li>
+<li><strong>Former les utilisateurs clés et les opérateurs</strong> : écrans, étiquettes et gestes de scan changent tous.</li>
+</ul>
+
+    <aside class="example"><h2>En atelier</h2><p>Un groupe décide de remplacer l&#x27;ERP local d&#x27;un site par son modèle S/4HANA. L&#x27;informatique industrielle liste quatorze flux avec l&#x27;usine. Les tests montrent que le MES attend des numéros d&#x27;ordre à 8 chiffres alors que SAP en envoie 12 : la table du MES et les mises en page des étiquettes sont modifiées avant le démarrage. Après deux chargements de test, le site démarre sur un long week-end, juste après un inventaire. La première semaine, trente IDocs échouent sur une correspondance d&#x27;unités de mesure ; l&#x27;hypercare corrige la correspondance et les retraite.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>La maintenance standard d&#x27;ECC se termine fin 2027 ; la maintenance étendue court jusqu&#x27;en 2030.</li><li>Depuis un ERP non SAP : nouvelle implémentation. Depuis ECC : conversion, nouvelle implémentation ou transition sélective.</li><li>SAP Activate : Discover, Prepare, Explore (fit-to-standard), Realize, Deploy, Run.</li><li>Pour l&#x27;informatique industrielle : lister les flux, vérifier la longueur des champs, reconstruire et tester les interfaces, planifier la bascule et l&#x27;hypercare.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Six questions sur cette annexe. Choisissez une réponse pour savoir si elle est juste. Elles ne font pas partie du QCM final.</p>
+    <div class="qcheck" data-ids="100,101,102,103,104,105" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-10/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/qcm/">QCM final →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Se repérer dans SAP · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Les deux façons de travailler dans SAP, les codes de transaction que tout le monde utilise, et la différence entre données de base et données de mouvement.">
+<meta property="og:title" content="Se repérer dans SAP · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Les deux façons de travailler dans SAP, les codes de transaction que tout le monde utilise, et la différence entre données de base et données de mouvement.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-2/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-2/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-2/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-2/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-2/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 2 sur 10</p>
+  <h1>Se repérer dans SAP</h1>
+  <p class="lead">Les deux façons de travailler dans SAP, les codes de transaction que tout le monde utilise, et la différence entre données de base et données de mouvement.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Distinguer SAP Fiori et SAP GUI.</li><li>Utiliser les codes de transaction et les principaux raccourcis clavier.</li><li>Distinguer données de base et données de mouvement.</li></ul></div>
+    
+<h2>Deux interfaces</h2>
+<p><strong>SAP Fiori</strong> est l'interface web. On ouvre le launchpad Fiori dans un navigateur et on voit des tuiles : chaque tuile est une application faite pour une tâche, par exemple confirmer une opération de fabrication. Les applications dépendent du rôle : un magasinier et un planificateur ne voient pas les mêmes tuiles. Fiori fonctionne sur PC comme sur tablette.</p>
+<p><strong>SAP GUI</strong> est le client Windows classique. On y travaille avec des <strong>codes de transaction</strong> : des codes courts tapés dans le champ de commande, en haut à gauche. Les deux interfaces travaillent sur les mêmes données, et beaucoup de gens utilisent les deux.</p>
+
+<h2>Les codes de transaction</h2>
+<ul>
+<li>Depuis le menu principal, tapez le code puis Entrée, par exemple <code>MM03</code> pour afficher un article.</li>
+<li><code>/n</code> devant le code quitte d'abord la transaction en cours : <code>/nMM03</code>.</li>
+<li><code>/o</code> ouvre la transaction dans une nouvelle session (fenêtre) : <code>/oMD04</code>.</li>
+<li>Beaucoup de codes suivent le schéma créer, modifier, afficher : <code>MM01</code>, <code>MM02</code>, <code>MM03</code> pour les articles, <code>CO01</code>, <code>CO02</code>, <code>CO03</code> pour les ordres de fabrication. Quand vous voulez seulement regarder, utilisez le code d'affichage : vous ne pouvez rien casser.</li>
+</ul>
+<p>Deux touches aident partout dans SAP GUI : <strong>F1</strong> explique le champ où se trouve le curseur, <strong>F4</strong> liste ses valeurs possibles.</p>
+
+<h2>Données de base et données de mouvement</h2>
+<p>Les <strong>données de base</strong> décrivent ce qui dure : articles, nomenclatures, gammes, postes de travail, fournisseurs, équipements. On les crée une fois et on les modifie rarement.</p>
+<p>Les <strong>données de mouvement</strong> enregistrent des événements : un ordre de fabrication, une confirmation, un mouvement de stock. Chaque événement crée un <strong>document</strong> avec un numéro, une date et un utilisateur. Un mouvement de stock, par exemple, crée un document article. On ne supprime pas les documents : une erreur se corrige par une annulation, et l'historique reste complet.</p>
+
+<h2>Rôles et autorisations</h2>
+<p>Ce que vous pouvez voir et faire dépend de vos rôles. S'il manque une application ou une transaction, votre rôle ne la contient probablement pas. Pour apprendre sans risque, demandez des rôles en affichage seul dans un système de test ou de formation.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Un opérateur scanne un ordre de fabrication à la fin d&#x27;une opération ; le MES envoie la confirmation à SAP. L&#x27;ordre de fabrication est une donnée de mouvement, l&#x27;article et la gamme qu&#x27;il utilise sont des données de base, et la confirmation crée un nouveau document que toute personne ayant le bon rôle peut afficher.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Fiori : applications web selon le rôle. SAP GUI : client classique avec des codes de transaction.</li><li>/n ouvre un code dans la même fenêtre, /o dans une nouvelle ; 01, 02, 03 signifient souvent créer, modifier, afficher.</li><li>F1 explique un champ, F4 liste ses valeurs.</li><li>Les données de base durent ; les données de mouvement enregistrent des événements dans des documents numérotés.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="10,13,14" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-1/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-3/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>

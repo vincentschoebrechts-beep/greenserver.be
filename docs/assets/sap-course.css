@@ -1,0 +1,66 @@
+/* greenserver.be — formation « SAP from the shop floor / SAP vu de l'atelier » */
+
+.course .goals {
+  background: var(--plate); border: 1px solid var(--rule); border-radius: 6px;
+  padding: .9rem 1.1rem .4rem; margin: 0 0 1.5rem;
+}
+.course .goals p { margin-bottom: .4rem; }
+.course .example {
+  border-left: 3px solid var(--green); background: var(--plate);
+  padding: .3rem 1.1rem .4rem; border-radius: 0 6px 6px 0; margin: 2.2rem 0 1rem;
+}
+.course .example h2 { font-size: 1.15rem; margin: .7rem 0 .4rem; text-transform: uppercase; letter-spacing: .04em; color: var(--green); }
+.course .keys li::marker { color: var(--green); }
+
+.lesson-list { padding-left: 1.6rem; }
+.lesson-list li { margin-bottom: .9rem; }
+.lesson-list a { font-family: "Barlow Semi Condensed", sans-serif; font-weight: 700; font-size: 1.2rem; }
+.lesson-list .muted { display: block; font-size: .95rem; }
+
+.lesson-nav {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+  border-top: 1px solid var(--rule); margin-top: 2.5rem; padding-top: 1.2rem;
+}
+
+/* Questions */
+.q {
+  background: var(--plate); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1rem 1.15rem; margin: 0 0 1rem;
+}
+.q legend { font-weight: 600; padding: 0; margin-bottom: .6rem; float: left; width: 100%; }
+.q legend + * { clear: both; }
+.q .from { display: block; font-weight: 500; font-size: .85rem; color: var(--muted); margin-bottom: .15rem; }
+.q fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.q label {
+  display: flex; gap: .6rem; align-items: flex-start;
+  padding: .45rem .6rem; margin: 0 0 .3rem; border: 1px solid transparent; border-radius: 4px; cursor: pointer;
+}
+.q label:hover { border-color: var(--rule); }
+.q input { margin-top: .3rem; accent-color: var(--green); flex: none; }
+.q label.is-right { border-color: var(--led-on); background: color-mix(in srgb, var(--led-on) 14%, transparent); }
+.q label.is-wrong { border-color: var(--led-red); background: color-mix(in srgb, var(--led-red) 12%, transparent); }
+.q .fb { margin: .5rem 0 0; font-size: .97rem; }
+.q .fb strong.ok { color: var(--green); }
+.q .fb strong.ko { color: var(--led-red); }
+.q.locked label { cursor: default; }
+.q.locked label:hover { border-color: transparent; }
+.q.locked label.is-right:hover { border-color: var(--led-on); }
+.q.locked label.is-wrong:hover { border-color: var(--led-red); }
+
+.quiz-bar {
+  position: sticky; bottom: 0; z-index: 2;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+  background: var(--plate); border: 1px solid var(--rule); border-radius: 6px;
+  padding: .7rem 1rem; margin: 1.5rem 0 0;
+}
+.quiz-msg { margin: .8rem 0 0; }
+.score-box {
+  background: var(--plate); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 1.1rem 1.2rem; margin: 0 0 1.5rem;
+}
+.score-box .big { font-family: "Barlow Semi Condensed", sans-serif; font-weight: 700; font-size: 2.6rem; line-height: 1; display: block; margin: .3rem 0 .5rem; }
+button.btn { border: 0; }
+
+.course .checklist { list-style: none; padding-left: 0; }
+.course .checklist li { padding-left: 1.9rem; position: relative; margin-bottom: .7rem; }
+.course .checklist li::before { content: ""; position: absolute; left: 0; top: .25em; width: 1.05rem; height: 1.05rem; border: 2px solid var(--green); border-radius: 3px; }

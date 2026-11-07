@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planifier avec le MRP · SAP vu de l&#x27;atelier</title>
+<meta name="description" content="Comment SAP transforme la demande en propositions : ce que calcule le MRP, les réglages qui le pilotent et l&#x27;écran où vivent les planificateurs.">
+<meta property="og:title" content="Planifier avec le MRP · SAP vu de l&#x27;atelier">
+<meta property="og:description" content="Comment SAP transforme la demande en propositions : ce que calcule le MRP, les réglages qui le pilotent et l&#x27;écran où vivent les planificateurs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://greenserver.be/sap/fr/lecon-4/">
+<link rel="canonical" href="https://greenserver.be/sap/fr/lecon-4/">
+<link rel="alternate" hreflang="fr" href="https://greenserver.be/sap/fr/lecon-4/">
+<link rel="alternate" hreflang="en" href="https://greenserver.be/sap/lesson-4/">
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../../../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../assets/site.css">
+<link rel="stylesheet" href="../../../assets/sap-course.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../../../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Navigation principale">
+      <a href="../../../#tools">Outils</a>
+      <a href="../../../sap/lesson-4/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<article class="article wrap course">
+  <p class="meta"><a href="../../../sap/fr/">SAP vu de l&#x27;atelier</a> · Leçon 4 sur 10</p>
+  <h1>Planifier avec le MRP</h1>
+  <p class="lead">Comment SAP transforme la demande en propositions : ce que calcule le MRP, les réglages qui le pilotent et l&#x27;écran où vivent les planificateurs.</p>
+  <div class="prose">
+    <div class="goals"><p><strong>Dans cette leçon</strong></p><ul><li>Comprendre le calcul des besoins nets.</li><li>Connaître les résultats du MRP : ordres planifiés et demandes d&#x27;achat.</li><li>Lire la liste des besoins et des stocks.</li></ul></div>
+    
+<h2>Ce que calcule le MRP</h2>
+<p>Le MRP (calcul des besoins) compare la <strong>demande</strong> et l'<strong>offre</strong>. La demande, ce sont les commandes clients et les prévisions (besoins indépendants planifiés). L'offre, c'est le stock et tout ce qui est déjà en route : ordres de fabrication, commandes d'achat. Ce qui manque est le <strong>besoin net</strong>.</p>
+<p>Pour chaque quantité manquante, le MRP crée une proposition à la bonne date. Pour un produit fabriqué en interne, il crée un <strong>ordre planifié</strong> et éclate la nomenclature : les composants reçoivent des <strong>besoins dépendants</strong>, que le MRP planifie à leur tour, niveau après niveau. Pour une pièce achetée, il crée une <strong>demande d'achat</strong>, que les acheteurs transforment en commande.</p>
+
+<h2>Les réglages qui le pilotent</h2>
+<p>Ils se trouvent dans les vues MRP de la fiche article :</p>
+<ul>
+<li><strong>Type de planification</strong> (MRP type) : si et comment l'article est planifié (PD pour le MRP, VB pour un point de commande manuel, ND pour aucune planification).</li>
+<li><strong>Type d'approvisionnement</strong> : E pour la fabrication interne, F pour l'approvisionnement externe, X pour les deux.</li>
+<li><strong>Taille de lot</strong> : EX commande exactement ce qui manque (lot pour lot), FX une quantité fixe, HB jusqu'à un stock maximum.</li>
+<li><strong>Délais</strong> : durée de fabrication interne, délai de livraison prévu, délai de traitement à l'entrée. Le MRP planifie à rebours depuis la date du besoin.</li>
+</ul>
+
+<h2>MRP Live et MD04</h2>
+<p>Dans S/4HANA, le calcul s'appelle <strong>MRP Live</strong> (<code>MD01N</code>) : il tourne dans la base SAP HANA et va beaucoup plus vite que le calcul classique. Les planificateurs travaillent ensuite dans la <strong>liste des besoins et des stocks</strong> (<code>MD04</code>, ou les applications MRP de Fiori) : stock, besoins et entrées par date, avec des messages d'exception quand quelque chose est en retard ou en trop.</p>
+<p>Quand la date approche, l'ordre planifié est <strong>converti</strong> en ordre de fabrication : la proposition devient un ordre réel, prêt à être lancé.</p>
+
+    <aside class="example"><h2>En atelier</h2><p>Les clients ont besoin de 100 pompes vendredi prochain. Il y en a 20 en stock et rien en commande ; la taille de lot est lot pour lot. Le MRP propose un ordre planifié de 80 pompes, positionné à rebours depuis vendredi selon la durée de fabrication. Il éclate la nomenclature : 80 moteurs, 80 corps de pompe, 640 vis. Les moteurs sont achetés et reçoivent une demande d&#x27;achat ; les corps sont fabriqués en interne et reçoivent leur propre ordre planifié.</p></aside>
+    <h2>À retenir</h2>
+    <ul class="keys"><li>Besoin net = demande − stock − entrées déjà prévues.</li><li>Fabrication interne : ordres planifiés, avec des besoins dépendants pour les composants. Achats : demandes d&#x27;achat.</li><li>Type de planification, type d&#x27;approvisionnement, taille de lot et délais déterminent le résultat.</li><li>MD01N lance MRP Live ; MD04 montre la situation en direct pour un article.</li></ul>
+    <h2 id="check">Testez-vous</h2>
+    <p>Trois questions sur cette leçon. Choisissez une réponse pour savoir si elle est juste.</p>
+    <div class="qcheck" data-ids="30,31,38" data-lang="fr"></div>
+    <nav class="lesson-nav" aria-label="Sommaire de la formation">
+      <a class="btn ghost" href="../../../sap/fr/lecon-3/">← Précédente</a>
+      <a href="../../../sap/fr/">Sommaire de la formation</a>
+      <a class="btn" href="../../../sap/fr/lecon-5/">Suivante →</a>
+    </nav>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>Pas de cookies, pas de pistage, polices servies par ce site.</span>
+  </div>
+</footer>
+<script src="../../../assets/sap-questions.js"></script>
+<script src="../../../assets/sap-course.js"></script>
+</body>
+</html>
