@@ -11,6 +11,7 @@ Ensuite : git add docs/files && git commit -m "Documents" && git push
 Fonctionnement
 - Le script demande le mot de passe (deux fois) et chiffre chaque fichier du dossier
   en AES-256-GCM, avec une clé dérivée du mot de passe (PBKDF2-SHA256, 600 000 tours).
+- Les sous-dossiers du dossier source (un niveau) deviennent des rubriques sur la page.
 - Il reconstruit entièrement docs/files/data/ : le dossier source est la référence.
   Pour ajouter ou retirer un document, ou changer le mot de passe, relancez-le.
 - Les noms des fichiers sont chiffrés aussi (dans manifest.bin) ; seuls leur nombre et
@@ -93,14 +94,19 @@ def main():
     if not (sortie / "index.html").is_file():
         sys.exit(f"Page introuvable : {sortie / 'index.html'}")
 
-    fichiers = sorted(
-        (f for f in source.iterdir()
-         if f.is_file() and not f.name.startswith(".") and f.name.lower() not in IGNORES),
-        key=lambda f: f.name.lower(),
-    )
+    def utiles(dossier):
+        return sorted((f for f in dossier.iterdir()
+                       if f.is_file() and not f.name.startswith(".") and f.name.lower() not in IGNORES),
+                      key=lambda f: f.name.lower())
+
+    # (rubrique, fichier) : les fichiers à la racine d'abord, puis un sous-dossier = une rubrique
+    fichiers = [("", f) for f in utiles(source)]
+    for sous in sorted((x for x in source.iterdir() if x.is_dir() and not x.name.startswith(".")),
+                       key=lambda x: x.name.lower()):
+        fichiers += [(sous.name, f) for f in utiles(sous)]
     if not fichiers:
         sys.exit(f"Aucun document dans {source}")
-    for f in fichiers:
+    for _, f in fichiers:
         t = f.stat().st_size
         if t > TAILLE_MAX:
             sys.exit(f"{f.name} fait {taille_lisible(t)} : GitHub refuse les fichiers de plus de 100 Mo.")
@@ -120,13 +126,13 @@ def main():
         ancien.unlink()
 
     liste = []
-    for f in fichiers:
+    for rubrique, f in fichiers:
         ident = secrets.token_hex(8)
         contenu = f.read_bytes()
         (data / f"{ident}.bin").write_bytes(chiffrer(aes, contenu, ident))
         type_mime = mimetypes.guess_type(f.name)[0] or "application/octet-stream"
-        liste.append({"id": ident, "name": f.name, "size": len(contenu), "type": type_mime})
-        print(f"  chiffré : {f.name} ({taille_lisible(len(contenu))})")
+        liste.append({"id": ident, "name": f.name, "folder": rubrique, "size": len(contenu), "type": type_mime})
+        print(f"  chiffré : {rubrique + '/' if rubrique else ''}{f.name} ({taille_lisible(len(contenu))})")
 
     manifeste = {
         "v": 1,

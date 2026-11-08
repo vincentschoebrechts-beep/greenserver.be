@@ -102,6 +102,9 @@
   .taille { color: var(--discret); font-size: 14px; }
   .actions { display: flex; gap: 8px; flex: none; }
   .vide { color: var(--texte2); margin: 14px 0 0; }
+  .rubrique { display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 26px 0 8px; }
+  .rubrique svg { width: 22px; height: 22px; color: var(--vert); flex: none; }
+  .rubrique .nb { color: var(--discret); font-weight: 400; font-size: 14px; }
 
   .pied { color: var(--discret); font-size: 13px; text-align: center; margin: 18px 0 0; }
 
@@ -143,7 +146,7 @@
       </div>
       <button class="secondaire" id="verrouiller" type="button">Lock</button>
     </div>
-    <ul class="liste" id="liste"></ul>
+    <div id="liste"></div>
   </section>
 
   <p class="pied">Decryption happens in your browser. The password is never sent anywhere.</p>
@@ -206,10 +209,50 @@
     return i > 0 ? nom.slice(i + 1, i + 5) : "file";
   }
 
+  const DOSSIER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.6l2 2h8.4A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" fill="currentColor"/></svg>';
+
   function afficherListe(maj) {
-    const ul = $("liste");
-    ul.replaceChildren();
+    const zone = $("liste");
+    zone.replaceChildren();
+    // Les documents à la racine d'abord, puis une rubrique par dossier, dans l'ordre du manifeste
+    const groupes = new Map();
     for (const doc of documents) {
+      const g = doc.folder || "";
+      if (!groupes.has(g)) groupes.set(g, []);
+      groupes.get(g).push(doc);
+    }
+    for (const [nomGroupe, docs] of groupes) {
+      if (nomGroupe) {
+        const h = document.createElement("h2");
+        h.className = "rubrique";
+        h.innerHTML = DOSSIER;
+        h.append(document.createTextNode(nomGroupe));
+        const nb = document.createElement("span");
+        nb.className = "nb";
+        nb.textContent = "· " + docs.length + (docs.length === 1 ? " document" : " documents");
+        h.append(nb);
+        zone.append(h);
+      }
+      const ul = document.createElement("ul");
+      ul.className = "liste";
+      remplirListe(ul, docs);
+      zone.append(ul);
+    }
+    if (!documents.length) {
+      const p = document.createElement("p"); p.className = "vide"; p.textContent = "No documents yet.";
+      zone.append(p);
+    }
+    const nbDossiers = [...groupes.keys()].filter(Boolean).length;
+    $("maj").textContent = documents.length + (documents.length === 1 ? " document" : " documents")
+      + (nbDossiers ? " in " + nbDossiers + (nbDossiers === 1 ? " folder" : " folders") : "")
+      + (maj ? " · updated " + maj : "");
+    $("ecran-verrou").hidden = true;
+    $("ecran-liste").hidden = false;
+    $("verrouiller").focus();
+  }
+
+  function remplirListe(ul, docs) {
+    for (const doc of docs) {
       const li = document.createElement("li");
       const ext = document.createElement("span");
       ext.className = "ext"; ext.textContent = extension(doc.name); ext.setAttribute("aria-hidden", "true");
@@ -225,15 +268,6 @@
       li.append(ext, infos, actions);
       ul.append(li);
     }
-    if (!documents.length) {
-      const p = document.createElement("p"); p.className = "vide"; p.textContent = "No documents yet.";
-      ul.append(p);
-    }
-    $("maj").textContent = documents.length + (documents.length === 1 ? " document" : " documents")
-      + (maj ? " · updated " + maj : "");
-    $("ecran-verrou").hidden = true;
-    $("ecran-liste").hidden = false;
-    $("verrouiller").focus();
   }
 
   function bouton(texte, libelle, action) {

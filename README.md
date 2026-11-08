@@ -29,7 +29,7 @@ git commit -m "Documents"
 git push
 ```
 
-Le script demande le mot de passe et reconstruit `docs/files/data/` à partir du dossier donné : pour ajouter ou retirer un document, ou changer le mot de passe, on le relance avec le dossier complet.
+Les sous-dossiers du dossier donné (un niveau) deviennent des rubriques sur la page. Le script demande le mot de passe et reconstruit `docs/files/data/` à partir du dossier donné : pour ajouter ou retirer un document, ou changer le mot de passe, on le relance avec le dossier complet.
 
 ## DNS
 
