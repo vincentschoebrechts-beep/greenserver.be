@@ -63,15 +63,25 @@
 
   label { display: block; font-weight: 600; margin-bottom: 6px; }
   .saisie { display: flex; gap: 10px; }
-  input[type=password] {
-    flex: 1; min-width: 0;
+  .champ { position: relative; flex: 1; min-width: 0; }
+  #mdp {
+    width: 100%;
     font: inherit; color: var(--texte);
     background: var(--fond);
     border: 1px solid var(--bord);
     border-radius: 10px;
-    padding: 11px 14px;
+    padding: 11px 48px 11px 14px;
   }
-  input[type=password]:focus { outline: 3px solid var(--vert); outline-offset: 1px; border-color: transparent; }
+  #mdp:focus { outline: 3px solid var(--vert); outline-offset: 1px; border-color: transparent; }
+  button.oeil {
+    position: absolute; top: 50%; right: 5px; transform: translateY(-50%);
+    display: grid; place-items: center;
+    width: 38px; height: 38px; padding: 0;
+    background: transparent; color: var(--texte2);
+    border-radius: 8px;
+  }
+  button.oeil:hover { background: var(--ok-fond); color: var(--vert); }
+  button.oeil svg { width: 22px; height: 22px; }
   button {
     font: inherit; font-weight: 700; cursor: pointer;
     border: 0; border-radius: 10px;
@@ -132,7 +142,13 @@
       <input type="text" name="username" value="greenserver.be/files" autocomplete="username" hidden>
       <label for="mdp" id="t-mdp">Password</label>
       <div class="saisie">
-        <input id="mdp" name="password" type="password" autocomplete="current-password" required autofocus>
+        <div class="champ">
+          <input id="mdp" name="password" type="password" autocomplete="current-password" required autofocus>
+          <button id="oeil" class="oeil" type="button" aria-controls="mdp" aria-pressed="false" aria-label="Show password" title="Show password">
+            <svg class="voir" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="cacher" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M10.6 5.1A9.9 9.9 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.7 8.5 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>
+          </button>
+        </div>
         <button id="ouvrir" type="submit">Unlock</button>
       </div>
       <p id="message" class="message" role="status" aria-live="polite"></p>
@@ -185,6 +201,7 @@
       mauvais: "Wrong password.",
       rien: "No documents have been published here yet.",
       chargement: "The documents could not be loaded. Check your connection and try again.",
+      voir: "Show password", cacher: "Hide password",
     },
     fr: {
       intro: "Ces fichiers sont chiffrés. Saisissez le mot de passe pour les ouvrir.",
@@ -207,6 +224,7 @@
       mauvais: "Mot de passe incorrect.",
       rien: "Aucun document n'a encore été publié ici.",
       chargement: "Impossible de charger les documents. Vérifiez votre connexion et réessayez.",
+      voir: "Afficher le mot de passe", cacher: "Masquer le mot de passe",
     },
   };
 
@@ -237,8 +255,28 @@
     lien.textContent = T.autre;
     lien.lang = lien.hreflang = T.autreCode;
     lien.href = "?lang=" + T.autreCode;
+    libelleOeil();
     if (cle) afficherListe(majManifeste, false);   // liste déjà ouverte : on la réécrit
   }
+
+  // ---- Œil : afficher ou masquer le mot de passe ----
+  function libelleOeil() {
+    const visible = $("mdp").type === "text";
+    const b = $("oeil");
+    b.setAttribute("aria-pressed", String(visible));
+    b.setAttribute("aria-label", visible ? T.cacher : T.voir);
+    b.title = visible ? T.cacher : T.voir;
+    // Pas de propriété .hidden sur les éléments SVG : on passe par l'attribut
+    b.querySelector(".voir").toggleAttribute("hidden", visible);
+    b.querySelector(".cacher").toggleAttribute("hidden", !visible);
+  }
+
+  function montrerMotDePasse(visible) {
+    $("mdp").type = visible ? "text" : "password";
+    libelleOeil();
+  }
+
+  $("oeil").addEventListener("click", () => montrerMotDePasse($("mdp").type === "password"));
 
   $("langue").addEventListener("click", (ev) => {
     ev.preventDefault();
@@ -434,6 +472,7 @@
     $("ecran-liste").hidden = true;
     $("ecran-verrou").hidden = false;
     $("mdp").value = "";
+    montrerMotDePasse(false);
     message("");
     $("mdp").focus();
   }
