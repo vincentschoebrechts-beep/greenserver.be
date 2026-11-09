@@ -107,6 +107,7 @@
   .rubrique .nb { color: var(--discret); font-weight: 400; font-size: 14px; }
 
   .pied { color: var(--discret); font-size: 13px; text-align: center; margin: 18px 0 0; }
+  .pied a { color: var(--vert); font-weight: 600; text-underline-offset: 2px; }
 
   @media (max-width: 560px) {
     .page { padding: 24px 12px; }
@@ -124,12 +125,12 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5" fill="currentColor"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
       <div>
         <h1>Documents</h1>
-        <p class="sous-titre">These files are encrypted. Enter the password to open them.</p>
+        <p class="sous-titre" id="t-intro">These files are encrypted. Enter the password to open them.</p>
       </div>
     </div>
     <form id="formulaire" autocomplete="on">
       <input type="text" name="username" value="greenserver.be/files" autocomplete="username" hidden>
-      <label for="mdp">Password</label>
+      <label for="mdp" id="t-mdp">Password</label>
       <div class="saisie">
         <input id="mdp" name="password" type="password" autocomplete="current-password" required autofocus>
         <button id="ouvrir" type="submit">Unlock</button>
@@ -149,7 +150,7 @@
     <div id="liste"></div>
   </section>
 
-  <p class="pied">Decryption happens in your browser. The password is never sent anywhere.</p>
+  <p class="pied"><span id="t-pied">Decryption happens in your browser. The password is never sent anywhere.</span> · <a id="langue" href="?lang=fr" hreflang="fr" lang="fr">Français</a></p>
 </main>
 
 <script>
@@ -161,16 +162,101 @@
 
   let cle = null;            // CryptoKey AES-GCM, gardée en mémoire seulement
   let documents = [];
+  let majManifeste = "";
   const cache = new Map();   // id -> Blob déchiffré
   const urls = new Set();
+
+  // ---- Langue : anglais par défaut, français si choisi (?lang=fr ou choix mémorisé) ----
+  const TEXTES = {
+    en: {
+      intro: "These files are encrypted. Enter the password to open them.",
+      mdp: "Password", ouvrir: "Unlock", verrouiller: "Lock",
+      pied: "Decryption happens in your browser. The password is never sent anywhere.",
+      autre: "Français", autreCode: "fr",
+      open: "Open", download: "Download", erreur: "Error",
+      aucun: "No documents yet.",
+      doc: (n) => n + (n === 1 ? " document" : " documents"),
+      dossiers: (n) => " in " + n + (n === 1 ? " folder" : " folders"),
+      maj: (d) => " · updated " + d,
+      unites: ["B", "KB", "MB", "GB"], decimale: ".",
+      dechiffrement: (nom) => "Decrypting " + nom + "…",
+      navigateur: "This browser cannot decrypt the files. Use an up-to-date browser over HTTPS.",
+      verification: "Checking the password…",
+      mauvais: "Wrong password.",
+      rien: "No documents have been published here yet.",
+      chargement: "The documents could not be loaded. Check your connection and try again.",
+    },
+    fr: {
+      intro: "Ces fichiers sont chiffrés. Saisissez le mot de passe pour les ouvrir.",
+      mdp: "Mot de passe", ouvrir: "Déverrouiller", verrouiller: "Verrouiller",
+      pied: "Le déchiffrement se fait dans votre navigateur. Le mot de passe n'est jamais envoyé.",
+      autre: "English", autreCode: "en",
+      open: "Ouvrir", download: "Télécharger", erreur: "Erreur",
+      aucun: "Aucun document pour l'instant.",
+      doc: (n) => n + (n === 1 ? " document" : " documents"),
+      dossiers: (n) => " dans " + n + (n === 1 ? " dossier" : " dossiers"),
+      maj: (d) => {
+        const date = new Date(d + "T12:00:00");
+        const lisible = isNaN(date) ? d : date.toLocaleDateString("fr-BE", { day: "numeric", month: "long", year: "numeric" });
+        return " · mis à jour le " + lisible;
+      },
+      unites: ["o", "Ko", "Mo", "Go"], decimale: ",",
+      dechiffrement: (nom) => "Déchiffrement de " + nom + "…",
+      navigateur: "Ce navigateur ne peut pas déchiffrer les fichiers. Utilisez un navigateur à jour, en HTTPS.",
+      verification: "Vérification du mot de passe…",
+      mauvais: "Mot de passe incorrect.",
+      rien: "Aucun document n'a encore été publié ici.",
+      chargement: "Impossible de charger les documents. Vérifiez votre connexion et réessayez.",
+    },
+  };
+
+  function memoriserLangue(l) { try { localStorage.setItem("langue", l); } catch (e) {} }
+
+  function langueInitiale() {
+    const demandee = new URLSearchParams(location.search).get("lang");
+    if (demandee === "fr" || demandee === "en") { memoriserLangue(demandee); return demandee; }
+    try {
+      const memo = localStorage.getItem("langue");
+      if (memo === "fr" || memo === "en") return memo;
+    } catch (e) {}
+    return "en";
+  }
+
+  let langue = langueInitiale();
+  let T = TEXTES[langue];
+
+  function appliquerLangue() {
+    T = TEXTES[langue];
+    document.documentElement.lang = langue;
+    $("t-intro").textContent = T.intro;
+    $("t-mdp").textContent = T.mdp;
+    $("ouvrir").textContent = T.ouvrir;
+    $("verrouiller").textContent = T.verrouiller;
+    $("t-pied").textContent = T.pied;
+    const lien = $("langue");
+    lien.textContent = T.autre;
+    lien.lang = lien.hreflang = T.autreCode;
+    lien.href = "?lang=" + T.autreCode;
+    if (cle) afficherListe(majManifeste, false);   // liste déjà ouverte : on la réécrit
+  }
+
+  $("langue").addEventListener("click", (ev) => {
+    ev.preventDefault();
+    langue = T.autreCode;
+    memoriserLangue(langue);
+    history.replaceState(null, "", "?lang=" + langue);
+    message("");
+    appliquerLangue();
+  });
 
   function base64(s) { return Uint8Array.from(atob(s), (c) => c.charCodeAt(0)); }
 
   function taille(n) {
-    if (n < 1024) return n + " B";
-    const u = ["KB", "MB", "GB"]; let i = -1;
+    const u = T.unites;
+    if (n < 1024) return n + " " + u[0];
+    let i = 0;
     do { n /= 1024; i++; } while (n >= 1024 && i < u.length - 1);
-    return n.toFixed(n < 10 ? 1 : 0) + " " + u[i];
+    return n.toFixed(n < 10 ? 1 : 0).replace(".", T.decimale) + " " + u[i];
   }
 
   async function charger(chemin) {
@@ -201,7 +287,8 @@
     const brut = new Uint8Array(await (await charger("data/manifest.bin")).arrayBuffer());
     const manifeste = JSON.parse(new TextDecoder().decode(await dechiffrer(brut, "manifest")));
     documents = manifeste.files || [];
-    afficherListe(manifeste.updated);
+    majManifeste = manifeste.updated || "";
+    afficherListe(majManifeste, true);
   }
 
   function extension(nom) {
@@ -211,7 +298,7 @@
 
   const DOSSIER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.6l2 2h8.4A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" fill="currentColor"/></svg>';
 
-  function afficherListe(maj) {
+  function afficherListe(maj, focus) {
     const zone = $("liste");
     zone.replaceChildren();
     // Les documents à la racine d'abord, puis une rubrique par dossier, dans l'ordre du manifeste
@@ -229,7 +316,7 @@
         h.append(document.createTextNode(nomGroupe));
         const nb = document.createElement("span");
         nb.className = "nb";
-        nb.textContent = "· " + docs.length + (docs.length === 1 ? " document" : " documents");
+        nb.textContent = "· " + T.doc(docs.length);
         h.append(nb);
         zone.append(h);
       }
@@ -239,16 +326,16 @@
       zone.append(ul);
     }
     if (!documents.length) {
-      const p = document.createElement("p"); p.className = "vide"; p.textContent = "No documents yet.";
+      const p = document.createElement("p"); p.className = "vide"; p.textContent = T.aucun;
       zone.append(p);
     }
     const nbDossiers = [...groupes.keys()].filter(Boolean).length;
-    $("maj").textContent = documents.length + (documents.length === 1 ? " document" : " documents")
-      + (nbDossiers ? " in " + nbDossiers + (nbDossiers === 1 ? " folder" : " folders") : "")
-      + (maj ? " · updated " + maj : "");
+    $("maj").textContent = T.doc(documents.length)
+      + (nbDossiers ? T.dossiers(nbDossiers) : "")
+      + (maj ? T.maj(maj) : "");
     $("ecran-verrou").hidden = true;
     $("ecran-liste").hidden = false;
-    $("verrouiller").focus();
+    if (focus) $("verrouiller").focus();
   }
 
   function remplirListe(ul, docs) {
@@ -263,8 +350,8 @@
       infos.append(nom, t);
       const actions = document.createElement("div");
       actions.className = "actions";
-      if (APERCU.test(doc.type)) actions.append(bouton("Open", "Open " + doc.name, () => ouvrir(doc)));
-      actions.append(bouton("Download", "Download " + doc.name, () => telecharger(doc)));
+      if (APERCU.test(doc.type)) actions.append(bouton(T.open, T.open + " " + doc.name, () => ouvrir(doc)));
+      actions.append(bouton(T.download, T.download + " " + doc.name, () => telecharger(doc)));
       li.append(ext, infos, actions);
       ul.append(li);
     }
@@ -286,7 +373,7 @@
   function alerteDiscrete(b, e) {
     console.error(e);
     const ancien = b.textContent;
-    b.textContent = "Error";
+    b.textContent = T.erreur;
     setTimeout(() => { b.textContent = ancien; }, 2500);
   }
 
@@ -327,7 +414,7 @@
     if (onglet) {
       onglet.document.title = doc.name;
       onglet.document.body.style.font = "16px system-ui, sans-serif";
-      onglet.document.body.textContent = "Decrypting " + doc.name + "…";
+      onglet.document.body.textContent = T.dechiffrement(doc.name);
     }
     try {
       const url = urlDe(await blobDe(doc));
@@ -340,7 +427,7 @@
   }
 
   function verrouiller() {
-    cle = null; documents = []; cache.clear();
+    cle = null; documents = []; majManifeste = ""; cache.clear();
     for (const u of urls) URL.revokeObjectURL(u);
     urls.clear();
     $("liste").replaceChildren();
@@ -355,17 +442,17 @@
     ev.preventDefault();
     const mdp = $("mdp").value;
     if (!mdp) return;
-    if (!window.crypto || !crypto.subtle) { message("This browser cannot decrypt the files. Use an up-to-date browser over HTTPS.", true); return; }
+    if (!window.crypto || !crypto.subtle) { message(T.navigateur, true); return; }
     $("ouvrir").disabled = true;
-    message("Checking the password…");
+    message(T.verification);
     try {
       await deverrouiller(mdp);
       message("");
     } catch (e) {
       cle = null;
-      if (e.name === "OperationError") message("Wrong password.", true);
-      else if (e.status === 404) message("No documents have been published here yet.", true);
-      else { console.error(e); message("The documents could not be loaded. Check your connection and try again.", true); }
+      if (e.name === "OperationError") message(T.mauvais, true);
+      else if (e.status === 404) message(T.rien, true);
+      else { console.error(e); message(T.chargement, true); }
       $("mdp").select();
     } finally {
       $("ouvrir").disabled = false;
@@ -373,6 +460,7 @@
   });
 
   $("verrouiller").addEventListener("click", verrouiller);
+  appliquerLangue();
 })();
 </script>
 </body>

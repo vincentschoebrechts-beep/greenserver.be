@@ -102,6 +102,9 @@ def page(lang, path, other_path, title, description, body, scripts=False):
     L = EN.LANG if lang == "en" else FR.LANG
     tools = "Tools" if lang == "en" else "Outils"
     root = rel(path, "")
+    # L'accueil existe en anglais (/) et en français (/fr/)
+    home = root if lang == "en" else root + "fr/"
+    tools_anchor = "#tools" if lang == "en" else "#outils"
     other_lang = "fr" if lang == "en" else "en"
     head_alt = (f'<link rel="alternate" hreflang="{lang}" href="{SITE}/{path}">\n'
                 f'<link rel="alternate" hreflang="{other_lang}" href="{SITE}/{other_path}">')
@@ -132,10 +135,10 @@ def page(lang, path, other_path, title, description, body, scripts=False):
 <body>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="{root}"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <a class="brand" href="{home}"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
     <nav aria-label="{'Main navigation' if lang == 'en' else 'Navigation principale'}">
-      <a href="{root}#tools">{tools}</a>
-      <a href="{rel(path, other_path)}" hreflang="{other_lang}" lang="{other_lang}">{L['switch']}</a>
+      <a href="{home}{tools_anchor}">{tools}</a>
+      <a href="{rel(path, other_path)}" hreflang="{other_lang}" lang="{other_lang}" onclick="try{{localStorage.setItem('langue','{other_lang}')}}catch(e){{}}">{L['switch']}</a>
     </nav>
   </div>
 </header>
