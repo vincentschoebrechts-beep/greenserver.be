@@ -1,0 +1,13 @@
+# Uniquement pour déployer en ligne de commande (npx wrangler deploy).
+# Le déploiement par le tableau de bord Cloudflare n'en a pas besoin : voir le README à la racine.
+name = "panier-commun"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[[kv_namespaces]]
+binding = "FILES"
+id = "REMPLACER_PAR_L_ID_DE_L_ESPACE_KV"
+
+# Les mots de passe ne vont PAS ici (le dépôt est public) :
+#   npx wrangler secret put PASSWORD
+#   npx wrangler secret put ADMIN_PASSWORD
