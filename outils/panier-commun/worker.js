@@ -11,8 +11,9 @@
 
    Réglages du Worker (Cloudflare > Workers > ce Worker > Settings) :
      FILES            liaison vers l'espace KV (Bindings > KV namespace)            obligatoire
-     PASSWORD         mot de passe commun (Variables and Secrets > Secret)           obligatoire
-     ADMIN_PASSWORD   mot de passe pour supprimer des fichiers (Secret)              facultatif
+     PASSWORD         mot de passe commun : Secret du Worker, ou liaison           obligatoire
+                      « Secrets Store » (Bindings > Add binding > Secrets Store)
+     ADMIN_PASSWORD   mot de passe pour supprimer des fichiers (idem)               facultatif
      ALLOWED_ORIGINS  sites autorisés, séparés par des virgules (Text)               facultatif
                       par défaut : https://greenserver.be,https://www.greenserver.be
      MAX_MB           taille maximale d'un fichier en Mo, 25 au plus (Text)          facultatif, 25 par défaut
@@ -41,7 +42,12 @@ export default {
 
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (!env.FILES) return fail(500, "no_kv_binding");
-    if (!env.PASSWORD) return fail(500, "no_password_set");
+
+    // Les mots de passe peuvent être des « Secrets » du Worker (texte) ou des liaisons « Secrets Store » (lues avec get()).
+    const PASSWORD = await readSecret(env.PASSWORD);
+    const ADMIN_PASSWORD = await readSecret(env.ADMIN_PASSWORD);
+    if (!PASSWORD) return fail(500, "no_password_set");
+    env = Object.assign({}, env, { PASSWORD, ADMIN_PASSWORD });
 
     const parts = url.pathname.split("/").filter(Boolean);       // ["files"] ou ["files", "<id>"]
     if (parts[0] !== "files" || parts.length > 2) return fail(404, "not_found");
@@ -143,6 +149,16 @@ async function remove(req, id, env, json, fail) {
 }
 
 /* ---------- outils ---------- */
+
+// Secret du Worker (chaîne) ou liaison Secrets Store (objet avec get()) ; "" si absent ou illisible.
+async function readSecret(binding) {
+  if (binding == null) return "";
+  if (typeof binding === "string") return binding;
+  if (typeof binding.get === "function") {
+    try { const v = await binding.get(); return v == null ? "" : String(v); } catch (e) { return ""; }
+  }
+  return String(binding);
+}
 
 function maxBytes(env) {
   const mb = Number(env.MAX_MB);
