@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>eWon Backup Cleaner: restore one backup on several eWons</title>
+<meta name="description" content="Replace the device-specific #_6 encrypted passwords of an eWon Flexy or Cosy backup with a clear password, so the same backup can be restored on other eWons.">
+<meta property="og:title" content="eWon Backup Cleaner: restore one backup on several eWons">
+<meta property="og:description" content="Replace the device-specific #_6 encrypted passwords of an eWon Flexy or Cosy backup with a clear password, so the same backup can be restored on other eWons.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://greenserver.be/ewon/">
+<link rel="canonical" href="https://greenserver.be/ewon/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../#tools">Tools</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <span class="state"><span class="led on" aria-hidden="true"></span>Runs in your browser</span>
+  <h1>eWon Backup Cleaner</h1>
+  <p class="lead">Since firmware 14.9s3 (Flexy) and 22.1s3 (Cosy), the passwords in an eWon backup are encrypted with a key unique to each device, written <code>#_6_…</code>. The backup can no longer be restored on another eWon. This page swaps those values for a clear password, which the target eWon encrypts again when it imports the file.</p>
+</section>
+
+<section class="wrap ew-tool">
+  <h2 id="clean">Clean a backup</h2>
+  <div class="panel tool">
+    <div class="form-grid">
+      <div class="field">
+        <label for="ew-pwd">Clear password</label>
+        <input id="ew-pwd" type="text" value="adm" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <span class="hint">Used for every “Replace” row you haven't edited by hand.</span>
+      </div>
+      <div class="field">
+        <label for="ew-pin">SIM PIN <span class="muted">(optional)</span></label>
+        <input id="ew-pin" type="text" inputmode="numeric" maxlength="8" placeholder="empty: PIN line left alone" autocomplete="off" spellcheck="false">
+        <span class="hint">Written to the PIN line of comcfg.txt, whether it's encrypted, in clear or missing. Empty: the eWon keeps its current PIN.</span>
+        <span class="hint warn" id="ew-pinwarn" hidden>“Remove comcfg.txt” is ticked: the PIN lives in comcfg.txt, so it won't be written.</span>
+      </div>
+      <div class="field">
+        <label for="ew-suffix">Output file suffix</label>
+        <input id="ew-suffix" type="text" value="_clear" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <span class="hint">backup.tar becomes backup<span id="ew-suffix-preview">_clear</span>.tar</span>
+      </div>
+    </div>
+    <div class="checks" style="margin-top:1rem">
+      <label class="check"><input type="checkbox" id="ew-dropcom">Remove comcfg.txt from the backup (IP, modem and Talk2M stay those of each target eWon)</label>
+      <label class="check"><input type="checkbox" id="ew-old">Also process the older keys (#_1 to #_5)</label>
+    </div>
+    <label class="drop" id="ew-drop">
+      <input type="file" id="ew-files" multiple accept=".tar,.zip,.gz,.tgz,.txt">
+      <b>Drop your eWon backups here</b>
+      <span>.tar (eBuddy or the Backup page), a .zip of backups, or config.txt / comcfg.txt. Several files at once is fine.</span>
+    </label>
+    <div class="ew-toolbar" id="ew-toolbar" hidden>
+      <button type="button" class="btn ghost" id="ew-clearlist">Clear the list</button>
+      <button type="button" class="btn" id="ew-all">Download all (.zip)</button>
+    </div>
+    <div id="ew-list" aria-live="polite"></div>
+  </div>
+  <p class="small muted prose">Your files never leave your computer: this page reads and rewrites them locally. Nothing is sent to greenserver.be.</p>
+
+  <h2>What gets changed</h2>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th scope="col">In the backup</th><th scope="col">By default</th></tr></thead>
+      <tbody>
+        <tr><td>User passwords (config.txt)</td><td>Replaced with the clear password. The <code>adm</code> user can't be removed.</td></tr>
+        <tr><td>SMTP, FTP, ISP, Wi-Fi, proxy, DynDNS…</td><td>Replaced with the clear password. Type the real one in its row if the eWon needs it.</td></tr>
+        <tr><td><code>PIN</code> (SIM PIN)</td><td>Your PIN if you entered one, otherwise the encrypted line is removed so a wrong PIN can't lock the SIM.</td></tr>
+        <tr><td><code>VPNSecretKey</code> (Talk2M)</td><td>Line removed: the target eWon keeps its own key.</td></tr>
+        <tr><td><code>DefAdmPass</code></td><td>Line removed: the target eWon keeps its own factory password.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Every row can be changed: replace, clear or remove the line. All other files and lines stay byte for byte as they were.</p>
+
+  <h2>Then</h2>
+  <ol class="steps prose">
+    <li>Restore the <code>.tar</code> with eBuddy or from the eWon's Backup/Restore page, or upload <code>config.txt</code> and <code>comcfg.txt</code> over FTP.</li>
+    <li>Log in with <code>adm</code> and the password you chose, then change it from the web interface.</li>
+    <li>On a new eWon, run the Talk2M wizard again.</li>
+    <li>Keep the cleaned backups somewhere safe and delete them once they've been pushed: their passwords are in clear.</li>
+  </ol>
+  <p class="small muted prose">Background: <a href="https://www.hms-networks.com/support/tech-support/kb-articles/21872277780882-How-to-handle-backup-restore-the-best-way-since-fwr-22-1s3-and-14-9s3-with-the-new---6-key">HMS Networks, How to handle backup/restore since fwr 22.1s3 and 14.9s3 with the new #_6 key</a>.</p>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span>No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../assets/ewon.js" defer></script>
+</body>
+</html>

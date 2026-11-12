@@ -11,6 +11,7 @@ Site statique en anglais, publié par GitHub Pages depuis le dossier `docs/` de 
 | `/update/` | `update/` | **Utilisée par le bouton « Mise à jour » de PC Time.** Téléchargement de la dernière version |
 | `/velo-train/` | `velo-train/index.html` | Présentation de Bike + Train |
 | `/smtp/` | `smtp/index.html` + `assets/smtp.js` | Testeur SMTP (DNS du domaine expéditeur, commandes de test) |
+| `/ewon/` | `ewon/index.html` + `assets/ewon.js` | eWon Backup Cleaner : remplace les mots de passe chiffrés `#_6_` d'un backup eWon par un mot de passe en clair (tout se fait dans le navigateur) |
 | `/files/` | `files/` | Documents chiffrés, accessibles par mot de passe |
 | `/sap/`, `/sap/fr/` | `sap/` | Formation gratuite « SAP from the shop floor / SAP vu de l'atelier » : 10 leçons, annexe, QCM final |
 | toute adresse inconnue | `404.html` | Page d'erreur |
