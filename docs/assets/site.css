@@ -356,6 +356,40 @@ input.invalid { border-color: var(--led-red); background: color-mix(in srgb, var
 .ew-foot input { max-width: 22rem; font-family: "IBM Plex Mono", monospace; font-size: .93rem; }
 .ew-foot .err { font-size: .9rem; color: var(--ink); }
 
+/* ---------- File exchange (panier commun) ---------- */
+.sh-tool [hidden] { display: none !important; }
+.sh-tool input[type="password"] {
+  font: 400 1rem/1.3 "Barlow", sans-serif; color: var(--ink); background: var(--field);
+  border: 1px solid var(--rule); border-radius: 4px; padding: .6rem .7rem; width: 100%;
+}
+.sh-tool .form-grid { max-width: 420px; }
+.sh-tool .note-box p { margin: 0; }
+.btn.small { padding: .42rem .75rem; font-size: .92rem; }
+.btn.danger { border-color: var(--led-red); color: var(--ink); }
+.btn.danger:hover { background: color-mix(in srgb, var(--led-red) 12%, transparent); }
+.sh-bar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .4rem; }
+.sh-bar .spacer { flex: 1; }
+.sh-table td { vertical-align: middle; }
+.sh-name { word-break: break-word; font-weight: 500; }
+.sh-num { white-space: nowrap; color: var(--muted); font-size: .93rem; }
+.sh-act { white-space: nowrap; text-align: right; padding-right: 0; }
+.sh-act .btn + .btn { margin-left: .4rem; }
+.sh-empty { margin: .8rem 0 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sh-uploads { list-style: none; padding: 0; margin: .8rem 0 0; }
+.sh-uploads li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: .8rem; align-items: center; padding: .45rem 0; border-top: 1px solid var(--rule); margin: 0; font-size: .95rem; }
+.sh-uploads .sh-up-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sh-uploads .sh-up-state { color: var(--muted); white-space: nowrap; }
+.sh-uploads li.ok .sh-up-state { color: var(--green); font-weight: 600; }
+.sh-uploads li.bad .sh-up-state { color: var(--ink); border-left: 3px solid var(--led-red); padding-left: .45rem; white-space: normal; }
+.sh-uploads progress { width: 8rem; accent-color: var(--green); }
+.sh-admin { margin-top: 1.2rem; }
+.sh-admin summary { cursor: pointer; color: var(--muted); }
+.sh-admin-form { display: flex; align-items: flex-end; gap: .8rem; flex-wrap: wrap; margin-top: .8rem; }
+.sh-admin-form .field { min-width: 240px; }
+.sh-admin-form .status-line { align-self: flex-end; padding-bottom: .7rem; }
+.sh-tool > p.small { margin-top: 1.6rem; }
+
 /* ---------- Notes (articles) ---------- */
 .article { padding-top: clamp(2.2rem, 6vw, 4rem); }
 .article .meta { color: var(--muted); margin: 0 0 1.4rem; }

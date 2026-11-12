@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>File exchange, greenserver.be</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f3f4f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2427" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="../assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="../"><span class="led on" aria-hidden="true"></span><span>greenserver<span class="tld">.be</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="../#tools" id="sh-tools" data-t="navTools">Tools</a>
+      <a href="?lang=fr" id="sh-lang" hreflang="fr" lang="fr">Français</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<section class="page-head wrap">
+  <span class="state"><span class="led on" aria-hidden="true"></span><span data-t="state">Password protected</span></span>
+  <h1 data-t="title">File exchange</h1>
+  <p class="lead" data-t="lead">Drop files here and pick up the ones others have left. Everyone with the password sees and can download every file.</p>
+</section>
+
+<!-- data-api : adresse du Worker Cloudflare (voir le README), par ex. https://panier-commun.xxx.workers.dev -->
+<section class="wrap sh-tool" id="sh" data-api="">
+
+  <div class="panel note-box" id="sh-off" hidden>
+    <p data-t="offline">The file exchange isn't connected yet.</p>
+  </div>
+
+  <form class="panel tool" id="sh-gate" hidden>
+    <div class="form-grid">
+      <div class="field">
+        <label for="sh-pwd" data-t="pwdLabel">Password</label>
+        <input id="sh-pwd" type="password" autocomplete="current-password" required>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" type="submit" data-t="open">Open</button>
+      <span id="sh-gate-status" class="status-line" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <div id="sh-app" hidden>
+    <div class="panel tool">
+      <label class="drop" id="sh-drop">
+        <input type="file" id="sh-files" multiple>
+        <b data-t="dropTitle">Drop files here</b>
+        <span id="sh-drop-hint">or click to choose them.</span>
+      </label>
+      <ul class="sh-uploads" id="sh-uploads" aria-live="polite"></ul>
+    </div>
+
+    <h2 data-t="filesTitle">Files</h2>
+    <div class="panel">
+      <div class="sh-bar">
+        <span id="sh-count" class="muted"></span>
+        <span class="spacer"></span>
+        <button type="button" class="btn ghost small" id="sh-refresh" data-t="refresh">Refresh</button>
+        <button type="button" class="btn ghost small" id="sh-lock" data-t="lock">Lock</button>
+      </div>
+      <div class="table-scroll">
+        <table class="sh-table">
+          <thead><tr>
+            <th scope="col" data-t="colName">Name</th>
+            <th scope="col" data-t="colSize">Size</th>
+            <th scope="col" data-t="colDate">Added</th>
+            <th scope="col"><span class="sr" data-t="colActions">Actions</span></th>
+          </tr></thead>
+          <tbody id="sh-tbody"></tbody>
+        </table>
+      </div>
+      <p class="muted sh-empty" id="sh-empty" data-t="empty" hidden>No files yet.</p>
+      <p class="status-line" id="sh-status" aria-live="polite"></p>
+    </div>
+
+    <details class="sh-admin" id="sh-admin">
+      <summary data-t="manage">Manage: delete files</summary>
+      <form class="sh-admin-form" id="sh-admin-form">
+        <div class="field">
+          <label for="sh-adminpwd" data-t="adminLabel">Administrator password</label>
+          <input id="sh-adminpwd" type="password" autocomplete="off">
+        </div>
+        <button class="btn ghost" type="submit" data-t="adminOk">Enable deleting</button>
+        <span id="sh-admin-status" class="status-line" aria-live="polite"></span>
+      </form>
+    </details>
+  </div>
+
+  <p class="small muted prose" data-t="privacy">Files are stored on Cloudflare and stay until they are deleted. Anyone with the password can download them, so don't drop anything confidential, such as an eWon backup with its passwords in clear.</p>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <span>greenserver.be, 2026</span>
+    <span data-t="footer">No cookies, no visitor tracking, fonts served from this site.</span>
+  </div>
+</footer>
+<script src="../assets/share.js" defer></script>
+</body>
+</html>
